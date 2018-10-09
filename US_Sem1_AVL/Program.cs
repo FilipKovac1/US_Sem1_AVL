@@ -26,9 +26,38 @@ namespace US_Sem1_AVL
             Tree.Insert(new Kniha(6, "Ignac Vseved"));
             Tree.Insert(new Kniha(4, "Preco Dalsie Meno"));
             Tree.Insert(new Kniha(120, "AAAAA"));
+            Tree.Insert(new Kniha(2, "BBBBB"));
             Tree.Insert(new Kniha(3, "BBBBB"));
+            Tree.Insert(new Kniha(5, "BBBBB"));
+            Tree.Insert(new Kniha(7, "BBBBB"));
+            Tree.Insert(new Kniha(11, "BBBBB"));
+            Tree.Insert(new Kniha(80, "BBBBB"));
+            Tree.Insert(new Kniha(99, "BBBBB"));
+            Tree.Insert(new Kniha(110, "BBBBB"));
+            Tree.Insert(new Kniha(130, "BBBBB"));
+            Tree.Insert(new Kniha(8, "BBBBB"));
+            Tree.Insert(new Kniha(9, "BBBBB"));
+            Tree.Insert(new Kniha(22, "BBBBB"));
+            Tree.Insert(new Kniha(10, "BBBBB"));
+            Tree.Insert(new Kniha(115, "Toto mi najdi"));
+            Tree.Insert(new Kniha(13, "BBBBB"));
+            Tree.Insert(new Kniha(12, "BBBBB"));
+            Tree.Insert(new Kniha(55, "BBBBB"));
+            Tree.Insert(new Kniha(66, "BBBBB"));
+            Tree.Insert(new Kniha(44, "Toto by malo byt viac schovane"));
+            Tree.Insert(new Kniha(33, "BBBBB"));
+            Tree.Insert(new Kniha(14, "BBBBB"));
+            Tree.Insert(new Kniha(15, "BBBBB"));
+            Tree.Insert(new Kniha(16, "BBBBB"));
+            Tree.Insert(new Kniha(17, "BBBBB"));
+            Tree.Insert(new Kniha(18, "BBBBB"));
+            Tree.Insert(new Kniha(19, "BBBBB"));
+            Tree.Insert(new Kniha(20, "BBBBB"));
+            Tree.Insert(new Kniha(21, "BBBBB"));
+            Tree.Insert(new Kniha(23, "BBBBB"));
+            Tree.Insert(new Kniha(24, "BBBBB"));
 
-            Console.WriteLine(Tree.ToString());
+            Console.WriteLine(Tree.Find(new Kniha(44, "")).ToString());
         }
     }
 }

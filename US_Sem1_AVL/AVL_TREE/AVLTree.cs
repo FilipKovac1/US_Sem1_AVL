@@ -1,4 +1,6 @@
-﻿namespace AVLTree
+﻿using System;
+
+namespace AVLTree
 {
     class AVLTree <T> where T : INode<T>
     {
@@ -9,6 +11,8 @@
         {
             this.Root = null;
         }
+
+        public T Find (T Data) => this.Find2(this.Root, Data).Data;
 
         public bool Insert (T Data)
         {
@@ -21,6 +25,24 @@
             return true;
         }
 
+        private Node<T> Find2(Node<T> Node, T Data)
+        {
+            if (Node == null)
+                return Node;
+
+            switch (Node.Data.CompareTo(Data))
+            {
+                case 0:
+                    return Node;
+                case 1:
+                    return this.Find2(Node.Right, Data);
+                case -1:
+                    return this.Find2(Node.Left, Data);
+            }
+
+            return null;
+        }
+
         private Node<T> Insert2 (Node<T> Node, T Data)
         {
             if (Node == null)
@@ -29,60 +51,42 @@
             switch (Node.Data.CompareTo(Data))
             {
                 case 1:
-                    if (Node.Right == null)
-                        Node.Right = new Node<T>(Data, Node);
-                    else
-                        this.Insert2(Node.Right, Data);
-                    Node.Balance += 1; 
+                    Node.Right = this.Insert2(Node.Right, Data);
                     break;
                 case -1:
-                    if (Node.Left == null)
-                        Node.Left = new Node<T>(Data, Node);
-                    else
-                        Node.Left = this.Insert2(Node.Left, Data);
-                    Node.Balance -= 1;
+                    Node.Left = this.Insert2(Node.Left, Data);
                     break;
                 case 0:
                     return Node;
             }
+            this.UpdateHeight(Node);
 
-            if (Node.Balance == 0)
+            int Balance = this.GetBalance(Node);
+            int BalanceL = this.GetBalance(Node.Left);
+            int BalanceR = this.GetBalance(Node.Right);
+            if (Balance == 0 && BalanceL == 0 && BalanceR == 0)
                 return Node;
 
             // LL rotation
-            if (Node.Balance > 0 && Node.GetBalance(false) > 0)
-            {
-                Node<T> ret = LeftRotation(Node);
-                if (ret.Parent != null)
-                    ret.Parent.Right = ret;
-            }
-
+            if (Balance > 1 && BalanceR > 0)
+                return LeftRotation(Node);
+        
             // RR rotation 
-            if (Node.Balance < 0 && Node.GetBalance(true) < 0)
-            {
-                Node<T> ret = RightRotation(Node);
-                if (ret.Parent != null)
-                    ret.Parent.Left = ret;
-            }
+            if (Balance < -1 && BalanceL < 0)
+                return RightRotation(Node);
 
             // LR rotation
-            if (Node.Balance < 0 && Node.GetBalance(true) > 0)
+            if (Balance < -1 && BalanceL > 0)
             {
                 Node.Left = this.LeftRotation(Node.Left);
-                Node<T> ret = RightRotation(Node);
-                if (ret.Parent != null)
-                    ret.Parent.Left = ret;
-                return ret;
+                return RightRotation(Node);
             }
 
             // RL rotation
-            if (Node.Balance > 0 && Node.GetBalance(false) < 0)
+            if (Balance > 1 && BalanceR < 0)
             {
                 Node.Right = this.RightRotation(Node.Right);
-                Node<T> ret = LeftRotation(Node);
-                if (ret.Parent != null)
-                    ret.Parent.Right = ret;
-                return ret;
+                return LeftRotation(Node);
             }
 
             return Node;
@@ -99,8 +103,8 @@
             Node.Parent = Right;
 
             // Update balance 
-            Node.SetBalance();
-            Right.SetBalance();
+            this.UpdateHeight(Node);
+            this.UpdateHeight(Right);
 
             // Return new parent
             return Right;
@@ -117,28 +121,26 @@
             Node.Parent = Left;
 
             // Update balance 
-            Node.SetBalance();
-            Left.SetBalance();
+            this.UpdateHeight(Node);
+            this.UpdateHeight(Left);
 
             // Return new parent
             return Left;
         }
 
-        public override string ToString()
-        {
-            if (this.Root == null)
-                return "Empty tree";
+        private int UpdateHeight(Node<T> Node) => Node.Height = Math.Max(this.Height(Node.Left), this.Height(Node.Right)) + 1;
+        private int GetBalance(Node<T> Node) => Node == null ? 0 : this.Height(Node.Right) - this.Height(Node.Left);
+        private int Height(Node<T> Node) => Node == null ? 0 : Node.Height;
 
-            return this.Vypis(this.Root);
-        }
+        public override string ToString() => this.Root == null ? "Empty tree" : this.Vypis(this.Root);
 
         private string Vypis (Node<T> Node)
         {
-            string ret = Node.Data.ToString() + " -> ";
+            string ret = Node.Data.ToString() + " | ";
             if (Node.Left != null)
-                ret += "L:" + this.Vypis(Node.Left);
+                ret += Node.Data.ToString() + " L:" + this.Vypis(Node.Left);
             if (Node.Right != null)
-                ret += "R:" + this.Vypis(Node.Right);
+                ret += Node.Data.ToString() + " R:" + this.Vypis(Node.Right);
 
             return ret;
         }

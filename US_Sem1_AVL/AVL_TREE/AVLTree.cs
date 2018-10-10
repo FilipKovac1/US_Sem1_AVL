@@ -54,12 +54,77 @@ namespace AVLTree
             }
 
             Node<T> act = this.Root;
+            Node<T> newNode = new Node<T>(Data);
 
             while (true)
             {
                 // TODO insert and balance
-                break;
+                switch (act.Data.CompareTo(Data))
+                {
+                    case 1:
+                        if (act.Right == null)
+                        {
+                            newNode.Parent = act;
+                            act.Right = newNode;
+                            this.Count++;
+                            goto afterInsert;
+                        }
+                        else
+                            act = act.Right;
+                        break;
+                    case -1:
+                        if (act.Left == null)
+                        {
+                            newNode.Parent = act;
+                            act.Left = newNode;
+                            this.Count++;
+                            goto afterInsert;
+                        }
+                        else
+                            act = act.Left;
+                        break;
+                    case 0:
+                        goto end;
+                }
             }
+            afterInsert:;
+
+            this.UpdateHeight(act);
+            act = act.Parent;
+
+            while (act != null) // go throught parent until root to check balance of changed tree and make rotation if necessary
+            {
+                this.UpdateHeight(act); // update height of actual node
+                int Balance = this.GetBalance(act);
+                int BalanceL = this.GetBalance(act.Left);
+                int BalanceR = this.GetBalance(act.Right);
+
+                // LL rotation
+                if (Balance > 1 && BalanceR > 0)
+                    act = LeftRotation(act);
+
+                // RR rotation 
+                if (Balance < -1 && BalanceL < 0)
+                    act = RightRotation(act);
+
+                // LR rotation
+                if (Balance < -1 && BalanceL > 0)
+                {
+                    act.Left = this.LeftRotation(act.Left);
+                    act = RightRotation(act);
+                }
+
+                // RL rotation
+                if (Balance > 1 && BalanceR < 0)
+                {
+                    act.Right = this.RightRotation(act.Right);
+                    act = LeftRotation(act);
+                }
+
+                act = act.Parent;
+            }
+
+            end:;
 
             return true;
         }
@@ -123,13 +188,22 @@ namespace AVLTree
         {
             Node<T> Right = Node.Right;
 
-            // Make rotaion
-            Node.Right = Right.Left;
-            Right.Left = Node;
-            Right.Parent = Node.Parent;
-            Node.Parent = Right;
+            // Make rotation
+            Node.Right = Right.Left;        // move T2 under new parent
+            if (Node.Right != null)
+                Node.Right.Parent = Node;       // update parent of T2
+            Right.Left = Node;              // update left child of new root
+            Right.Parent = Node.Parent;     // update parent of new root
+            Node.Parent = Right;            // update changed tree parent to new root
 
-            // Update balance 
+            if (Right.Parent == null)
+                this.Root = Right;
+            else if (Right.Parent.Right != null && Right.Parent.Right.Data.CompareTo(Node.Data) == 0)
+                Right.Parent.Right = Right;
+            else
+                Right.Parent.Left = Right;
+
+            // Update heights 
             this.UpdateHeight(Node);
             this.UpdateHeight(Right);
 
@@ -141,13 +215,22 @@ namespace AVLTree
         {
             Node<T> Left = Node.Left;
 
-            // Make rotaion
+            // Make rotation
             Node.Left = Left.Right;
+            if (Node.Left != null)
+                Node.Left.Parent = Node;
             Left.Right = Node;
             Left.Parent = Node.Parent;
             Node.Parent = Left;
 
-            // Update balance 
+            if (Left.Parent == null)
+                this.Root = Left;
+            else if (Left.Parent.Left != null && Left.Parent.Left.Data.CompareTo(Node.Data) == 0)
+                Left.Parent.Left = Left;
+            else
+                Left.Parent.Right = Left;
+
+            // Update heihgts 
             this.UpdateHeight(Node);
             this.UpdateHeight(Left);
 

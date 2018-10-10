@@ -57,7 +57,7 @@ namespace US_Sem1_AVL
             Tree.Insert(new Kniha(23, "BBBBB"));
             Tree.Insert(new Kniha(24, "BBBBB"));
 
-            Console.WriteLine(Tree.Find(new Kniha(44, "")).ToString());
+            Console.WriteLine(Tree.ToString());
         }
     }
 }

@@ -5,44 +5,71 @@ namespace AVLTree
     class AVLTree <T> where T : INode<T>
     {
 
-        public Node<T> Root { get; set; }
+        private Node<T> Root { get; set; }
+        private int Count { get; set; }
 
         public AVLTree ()
         {
             this.Root = null;
+            this.Count = 0;
         }
 
-        public T Find (T Data) => this.Find2(this.Root, Data).Data;
+        /// <summary>
+        /// n -> nuber of items in the tree
+        /// O(log n)
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
+        public T Find(T Data)
+        {
+            if (this.Root == null)
+                return default(T);
+
+            Node<T> act = this.Root;
+
+            while (act.Data.CompareTo(Data) != 0)
+            {
+                if (act.Data.CompareTo(Data) < 0) {
+                    if (act.Left != null)
+                        act = act.Left;
+                    else
+                        break;
+                } else {
+                    if (act.Right != null)
+                        act = act.Right;
+                    else
+                        break;
+                }
+            }
+
+            return act.Data.CompareTo(Data) == 0 ? act.Data : default(T);
+        }
 
         public bool Insert (T Data)
         {
             if (this.Root == null) { // if root is null parent does not matter
-                this.Root = this.Insert2(null, Data);
+                this.Root = new Node<T>(Data);
+                this.Count++;
                 return true;
             }
 
-            this.Root = this.Insert2(this.Root, Data);
+            Node<T> act = this.Root;
+
+            while (true)
+            {
+                // TODO insert and balance
+                break;
+            }
+
             return true;
         }
 
-        private Node<T> Find2(Node<T> Node, T Data)
-        {
-            if (Node == null)
-                return Node;
-
-            switch (Node.Data.CompareTo(Data))
-            {
-                case 0:
-                    return Node;
-                case 1:
-                    return this.Find2(Node.Right, Data);
-                case -1:
-                    return this.Find2(Node.Left, Data);
-            }
-
-            return null;
-        }
-
+        /// <summary>
+        /// Do not use // recurent methods should not be used here (stackOverFlow exception)
+        /// </summary>
+        /// <param name="Node"></param>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         private Node<T> Insert2 (Node<T> Node, T Data)
         {
             if (Node == null)

@@ -18,6 +18,12 @@ namespace US_Sem1_AVL.Model
             this.Name = Name;
         }
 
+        public Kniha (int ID)
+        {
+            this.ID = ID;
+            this.Name = String.Empty;
+        }
+
         public int CompareTo(INode<Kniha> Node)
         {
             Kniha kniha = (Kniha) Node;

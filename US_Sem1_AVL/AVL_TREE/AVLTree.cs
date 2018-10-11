@@ -45,6 +45,11 @@ namespace AVLTree
             return act.Data.CompareTo(Data) == 0 ? act.Data : default(T);
         }
 
+        /// <summary>
+        /// Insert of Generic class to tree using loop
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public bool Insert (T Data)
         {
             if (this.Root == null) { // if root is null parent does not matter
@@ -92,12 +97,103 @@ namespace AVLTree
             this.UpdateHeight(act);
             act = act.Parent;
 
+            int Balance = 0, BalanceL = 0, BalanceR = 0;
+
             while (act != null) // go throught parent until root to check balance of changed tree and make rotation if necessary
             {
                 this.UpdateHeight(act); // update height of actual node
-                int Balance = this.GetBalance(act);
-                int BalanceL = this.GetBalance(act.Left);
-                int BalanceR = this.GetBalance(act.Right);
+                Balance = this.GetBalance(act);
+                BalanceL = this.GetBalance(act.Left);
+                BalanceR = this.GetBalance(act.Right);
+
+                if (Balance == 0)
+                    goto end;
+
+                // LL rotation
+                if (Balance > 1 && BalanceR > 0)
+                    act = LeftRotation(act);
+
+                // RR rotation 
+                if (Balance < -1 && BalanceL < 0)
+                    act = RightRotation(act);
+
+                // LR rotation
+                if (Balance < -1 && BalanceL > 0)
+                {
+                    act.Left = this.LeftRotation(act.Left);
+                    act = RightRotation(act);
+                }
+
+                // RL rotation
+                if (Balance > 1 && BalanceR < 0)
+                {
+                    act.Right = this.RightRotation(act.Right);
+                    act = LeftRotation(act);
+                }
+
+                act = act.Parent;
+            }
+            end:;
+
+            return true;
+        }
+
+        public bool Delete (T Data)
+        {
+            if (this.Root == null)
+                return false;
+
+            Node<T> act = this.Root;
+
+            while (act.Data.CompareTo(Data) != 0)
+            {
+                if (act.Data.CompareTo(Data) < 0)
+                {
+                    if (act.Left != null)
+                        act = act.Left;
+                    else
+                        return false;
+                }
+                else
+                {
+                    if (act.Right != null)
+                        act = act.Right;
+                    else
+                        return false;
+                }
+            }
+
+            if (act.Right == null || act.Left == null) // if i removing leaf or with one child
+            {
+                Node<T> child = act.Right == null ? act.Left : act.Right;
+                if (act.Parent == null) // it was root
+                    this.Root = child;
+                else
+                {
+                    this.SetParentChild(act, child, Data);
+                    this.SetParent(act, act.Parent);
+                }
+
+                if (child != null) 
+                    act = child;
+            }
+            else 
+            {
+                Node<T> minChild = this.FindLeftLeaf(act.Right);
+
+                act.Data = minChild.Data;
+                this.SetParentChild(minChild, null, minChild.Data);
+                act = minChild.Parent;
+            }
+
+            int Balance = 0, BalanceL = 0, BalanceR = 0;
+
+            while (act != null)
+            {
+                this.UpdateHeight(act);
+                Balance = this.GetBalance(act);
+                BalanceL = this.GetBalance(act.Left);
+                BalanceR = this.GetBalance(act.Right);
 
                 // LL rotation
                 if (Balance > 1 && BalanceR > 0)
@@ -124,13 +220,34 @@ namespace AVLTree
                 act = act.Parent;
             }
 
-            end:;
-
             return true;
         }
 
+        private Node<T> FindLeftLeaf(Node<T> Node)
+        {
+            while (Node.Left != null)
+                Node = Node.Left;
+            return Node;
+        }
+        private void SetParentChild (Node<T> act, Node<T> child, T Data)
+        {
+            if (act.Parent != null)
+            {
+                if (act.Parent.Right != null && act.Parent.Right.Data.CompareTo(Data) == 0) // set parents right and left
+                    act.Parent.Right = child;
+                else
+                    act.Parent.Left = child;
+            }
+        } 
+        private void SetParent (Node<T> Root, Node<T> NewRoot)
+        {
+            if (Root.Left != null)
+                Root.Left.Parent = NewRoot;
+            if (Root.Right != null)
+                Root.Right.Parent = NewRoot;
+        }
         /// <summary>
-        /// Do not use // recurent methods should not be used here (stackOverFlow exception)
+        /// Do not use // recursion methods should not be used here (stackOverFlow exception)
         /// </summary>
         /// <param name="Node"></param>
         /// <param name="Data"></param>
@@ -198,10 +315,8 @@ namespace AVLTree
 
             if (Right.Parent == null)
                 this.Root = Right;
-            else if (Right.Parent.Right != null && Right.Parent.Right.Data.CompareTo(Node.Data) == 0)
-                Right.Parent.Right = Right;
             else
-                Right.Parent.Left = Right;
+                this.SetParentChild(Right, Right, Node.Data);
 
             // Update heights 
             this.UpdateHeight(Node);
@@ -225,10 +340,8 @@ namespace AVLTree
 
             if (Left.Parent == null)
                 this.Root = Left;
-            else if (Left.Parent.Left != null && Left.Parent.Left.Data.CompareTo(Node.Data) == 0)
-                Left.Parent.Left = Left;
             else
-                Left.Parent.Right = Left;
+                this.SetParentChild(Left, Left, Node.Data);
 
             // Update heihgts 
             this.UpdateHeight(Node);

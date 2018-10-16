@@ -19,5 +19,10 @@
             this.Data = Data;
             this.Height = 1;
         }
+
+        public override string ToString() => this.Data.ToString();
+
+        public bool HasChild() => this.Left != null && this.Right != null;
+        public int CompareTo(Node<T> Node) => this.Data.CompareTo(Node.Data);
     }
 }

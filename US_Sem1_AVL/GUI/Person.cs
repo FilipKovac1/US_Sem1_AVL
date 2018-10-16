@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace US_Sem1_AVL
+namespace US_Sem1_AVL.GUI
 {
-    public partial class Form1 : Form
+    public partial class Person : Form
     {
-        public Form1()
+        public Person()
         {
             InitializeComponent();
         }

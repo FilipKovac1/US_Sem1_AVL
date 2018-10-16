@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace AVLTree
 {
@@ -220,6 +222,7 @@ namespace AVLTree
                 act = act.Parent;
             }
 
+            this.Count--;
             return true;
         }
 
@@ -228,6 +231,15 @@ namespace AVLTree
             while (Node.Left != null)
                 Node = Node.Left;
             return Node;
+        }
+        private void FindLeftLeaf(Node<T> Node, Stack s, int x = 1)
+        {
+            while (Node != null)
+            {
+                for (int i = 0; i < x; i++)
+                    s.Push(Node);
+                Node = Node.Left;
+            }
         }
         private void SetParentChild (Node<T> act, Node<T> child, T Data)
         {
@@ -354,18 +366,94 @@ namespace AVLTree
         private int UpdateHeight(Node<T> Node) => Node.Height = Math.Max(this.Height(Node.Left), this.Height(Node.Right)) + 1;
         private int GetBalance(Node<T> Node) => Node == null ? 0 : this.Height(Node.Right) - this.Height(Node.Left);
         private int Height(Node<T> Node) => Node == null ? 0 : Node.Height;
-
-        public override string ToString() => this.Root == null ? "Empty tree" : this.Vypis(this.Root);
-
-        private string Vypis (Node<T> Node)
+        public string ToString(string type)
         {
-            string ret = Node.Data.ToString() + " | ";
-            if (Node.Left != null)
-                ret += Node.Data.ToString() + " L:" + this.Vypis(Node.Left);
-            if (Node.Right != null)
-                ret += Node.Data.ToString() + " R:" + this.Vypis(Node.Right);
+            if (this.Root == null)
+                return "Empty tree";
+            switch (type)
+            {
+                case "PostOrder":
+                    return this.PostOrder(this.Root);
+                case "InOrder":
+                    return this.InOrder(this.Root);
+                default: // PreOrder
+                    return this.PreOrder(this.Root);
+            }
+        }
+        private string PostOrder(Node<T> Root)
+        {
+            Stack s = new Stack(this.Count);
+            Node<T> act = Root;
+            int count = 0;
+            string ret = "";
+            while (this.Count > count)
+            {
+                this.FindLeftLeaf(act, s, 2);
+                if (s.Count == 0)
+                    break;
+
+                act = (Node<T>) s.Pop();
+                if (s.Count > 0 && (Node<T>)s.Peek() == act)
+                    act = act.Right;
+                else {
+                    ret += this.PrintNode(act);
+                    act = null;
+                }
+            }
+            return ret;
+        }
+        private string InOrder(Node<T> Root)
+        {
+            Stack s = new Stack(this.Count / 2);
+            Node<T> act = Root; // start at root
+            string ret = "";
+            int count = 0;
+            while (count < this.Count) // go through all items in the tree
+            {
+                this.FindLeftLeaf(act, s); // save path to from act to the left leaf into stack
+                act = (Node<T>) s.Pop(); // get last added to print
+
+                ret += PrintNode(act);
+                count++;
+
+                act = act.Right; // don't forget about right side
+            }
 
             return ret;
         }
+        private string PreOrder(Node<T> Node)
+        {
+            Stack s = new Stack(this.Count / 2);
+            s.Push(Node);
+            Node<T> act = null;
+            string ret = "";
+            int count = 0;
+            while (count < this.Count) // go through all items in the tree
+            {
+                act = (Node<T>)s.Pop(); // get last added to print
+
+                ret += PrintNode(act);
+                count++;
+
+                if (act.Right != null)
+                    s.Push(act.Right);
+                if (act.Left != null)
+                    s.Push(act.Left);
+            }
+
+            return ret;
+
+        }
+        private string PreOrderRec (Node<T> Node)
+        {
+            string ret = Node.ToString() + " | ";
+            if (Node.Left != null)
+                ret += Node.ToString() + " L:" + this.PreOrder(Node.Left);
+            if (Node.Right != null)
+                ret += Node.ToString() + " R:" + this.PreOrder(Node.Right);
+
+            return ret;
+        }
+        private string PrintNode (Node<T> Node) => (Node.Parent != null ? Node.Parent.ToString() + ":" : "") + Node.ToString() + " | ";
     }
 }

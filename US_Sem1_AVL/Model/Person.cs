@@ -12,6 +12,8 @@ namespace Model
 
         public Property Property { get; set; } // where person live
 
+        public Person () { }
+
         public Person (string ID, string Name = "Unknown")
         {
             this.ID = ID;

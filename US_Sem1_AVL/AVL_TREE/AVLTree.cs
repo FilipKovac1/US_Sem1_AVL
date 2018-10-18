@@ -8,7 +8,7 @@ namespace AVLTree
     {
 
         private Node<T> Root { get; set; }
-        private int Count { get; set; }
+        public int Count { get; set; }
 
         public AVLTree ()
         {
@@ -91,25 +91,27 @@ namespace AVLTree
                             act = act.Left;
                         break;
                     case 0:
-                        goto end;
+                        return false;
                 }
             }
             afterInsert:;
-
-            this.UpdateHeight(act);
+            bool updateHeight = !act.HasChild();
+            if (updateHeight)
+                this.UpdateHeight(act);
             act = act.Parent;
 
             int Balance = 0, BalanceL = 0, BalanceR = 0;
 
             while (act != null) // go throught parent until root to check balance of changed tree and make rotation if necessary
             {
-                this.UpdateHeight(act); // update height of actual node
+                if (updateHeight)
+                    this.UpdateHeight(act); // update height of actual node
                 Balance = this.GetBalance(act);
                 BalanceL = this.GetBalance(act.Left);
                 BalanceR = this.GetBalance(act.Right);
 
                 if (Balance == 0)
-                    goto end;
+                    break;
 
                 // LL rotation
                 if (Balance > 1 && BalanceR > 0)
@@ -135,7 +137,6 @@ namespace AVLTree
 
                 act = act.Parent;
             }
-            end:;
 
             return true;
         }
@@ -192,6 +193,8 @@ namespace AVLTree
 
             while (act != null)
             {
+                if (this.GetBalance(act) == 0)
+                    break;
                 this.UpdateHeight(act);
                 Balance = this.GetBalance(act);
                 BalanceL = this.GetBalance(act.Left);

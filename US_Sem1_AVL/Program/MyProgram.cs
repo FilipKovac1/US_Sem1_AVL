@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AVLTree;
 using Model;
 
@@ -11,9 +7,9 @@ namespace US_Sem1_AVL
     class MyProgram
     {
 
-        public AVLTree<Person> Persons { get; set; }
-        public AVLTree<CadastralAreaByID> CadastralAreasByID { get; set; }
-        public AVLTree<CadastralAreaByName> CadastralAreasByName { get; set; }
+        private AVLTree<Person> Persons { get; set; }
+        private AVLTree<CadastralAreaByID> CadastralAreasByID { get; set; }
+        private AVLTree<CadastralAreaByName> CadastralAreasByName { get; set; }
 
         public MyProgram ()
         {
@@ -22,24 +18,34 @@ namespace US_Sem1_AVL
             this.CadastralAreasByName = new AVLTree<CadastralAreaByName>();
         }
 
-        public MyProgram (bool Generate) : this()
+        public MyProgram (bool Generate, int cadastralCount, int personsCount, int propertyListCount, int propertyCount) : this()
         {
             if (Generate)
             {
                 Random personsR = new Random(100);
                 Random cadR = new Random(101);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < personsCount; i++)
                 {
-                    Persons.Insert(new Person(personsR.Next(1000000).ToString()));
+                    Persons.Insert(new Person(personsR.Next(personsCount * 10).ToString()));
                 }
                 CadastralArea c = null;
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < cadastralCount; i++)
                 {
-                    c = new CadastralArea(cadR.Next(10000));
+                    c = new CadastralArea(cadR.Next(cadastralCount + 10));
                     CadastralAreasByID.Insert(new CadastralAreaByID(c));
                     CadastralAreasByName.Insert(new CadastralAreaByName(c));
                 }
             } 
+        }
+
+        public bool AddPerson(Person Person) => this.Persons.Insert(Person);
+        public bool AddCadastralArea(CadastralArea CadastralArea)
+        {
+            if (!this.CadastralAreasByID.Insert(new CadastralAreaByID(CadastralArea)))
+                return false;
+            if (!this.CadastralAreasByName.Insert(new CadastralAreaByName(CadastralArea)))
+                return false;
+            return true;
         }
     }
 }

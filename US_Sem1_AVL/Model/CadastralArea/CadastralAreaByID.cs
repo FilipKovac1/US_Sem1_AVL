@@ -19,5 +19,10 @@ namespace Model
             CadastralAreaByID obj = (CadastralAreaByID)Node;
             return Compare.IntC(this.CadastralArea.ID, obj.CadastralArea.ID);
         }
+
+        public override string ToString()
+        {
+            return this.CadastralArea.ID + "";
+        }
     }
 }

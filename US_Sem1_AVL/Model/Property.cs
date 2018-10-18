@@ -11,8 +11,6 @@ namespace Model
         public string Address { get; set; }
         public string Description { get; set; }
 
-        public List<Person> Owners { get; set; } // who owns this property (share percentage is in Share list)
-        public List<Double> Shares { get; set; } // share of property
         public List<Person> Occupants { get; set; } // people who live here 
 
         public PropertyList PropertyList { get; set; } // property list where is property listed

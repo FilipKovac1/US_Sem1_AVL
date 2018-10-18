@@ -16,5 +16,10 @@ namespace Model
             this.ID = ID;
             this.Name = Name;
         }
+
+        public override string ToString()
+        {
+            return String.Format("| {0} - {1} | ", this.ID, this.Name);
+        }
     }
 }

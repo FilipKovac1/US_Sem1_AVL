@@ -10,6 +10,9 @@ namespace AVLTree
         private Node<T> Root { get; set; }
         public int Count { get; set; }
 
+        private Random RandomH = new Random();
+        private Random RandomS = new Random();
+
         public AVLTree ()
         {
             this.Root = null;
@@ -458,5 +461,94 @@ namespace AVLTree
             return ret;
         }
         private string PrintNode (Node<T> Node) => (Node.Parent != null ? Node.Parent.ToString() + ":" : "") + Node.ToString() + " | ";
+        public LinkedList<T> PostOrder()
+        {
+            LinkedList<T> ret = new LinkedList<T>();
+            if (this.Root == null)
+                return ret;
+            Stack s = new Stack(this.Count);
+            Node<T> act = this.Root;
+            int count = 0;
+            while (this.Count > count)
+            {
+                this.FindLeftLeaf(act, s, 2);
+                if (s.Count == 0)
+                    break;
+
+                act = (Node<T>)s.Pop();
+                if (s.Count > 0 && (Node<T>)s.Peek() == act)
+                    act = act.Right;
+                else
+                {
+                    ret.AddLast(act.Data);
+                    act = null;
+                }
+            }
+            return ret;
+        }
+        public LinkedList<T> InOrder()
+        {
+            LinkedList<T> ret = new LinkedList<T>();
+            if (this.Root == null)
+                return ret;
+            Stack s = new Stack(this.Count / 2);
+            Node<T> act = Root; // start at root
+            int count = 0;
+            while (count < this.Count) // go through all items in the tree
+            {
+                this.FindLeftLeaf(act, s); // save path to from act to the left leaf into stack
+                act = (Node<T>)s.Pop(); // get last added to print
+
+                ret.AddLast(act.Data);
+                count++;
+
+                act = act.Right; // don't forget about right side
+            }
+
+            return ret;
+        }
+        public LinkedList<T> PreOrder()
+        {
+            LinkedList<T> ret = new LinkedList<T>();
+            if (this.Root == null)
+                return ret;
+            Stack s = new Stack(this.Count / 2); // cannot be more than half of the nodes in the stack
+            Node<T> act = this.Root;
+            s.Push(act);
+            int count = 0;
+            while (count < this.Count) // go through all items in the tree
+            {
+                act = (Node<T>)s.Pop(); // get last added to print
+
+                ret.AddLast(act.Data);
+                count++;
+
+                if (act.Right != null)
+                    s.Push(act.Right);
+                if (act.Left != null)
+                    s.Push(act.Left);
+            }
+
+            return ret;
+
+        }
+        public T Find()
+        {
+            if (this.Root == null)
+                return default(T);
+
+            int height = RandomH.Next(this.Root.Height);
+            Node<T> act = this.Root;
+            for (int i = 0; i < height; i++)
+            {
+                if (!act.HasChild())
+                    return act.Data;
+                if (RandomS.NextDouble() < 0.5 && act.Left != null)
+                    act = act.Left;
+                else
+                    act = act.Right;
+            }
+            return act.Data;
+        } 
     }
 }

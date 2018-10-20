@@ -14,6 +14,8 @@ namespace Model
             this.CadastralArea = c;
         }
 
+        public override string ToString() => this.CadastralArea.Name;
+
         public int CompareTo(INode<CadastralAreaByName> Node)
         {
             CadastralAreaByName obj = (CadastralAreaByName)Node;

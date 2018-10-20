@@ -8,13 +8,22 @@ namespace Model
     {
         public string Name { get; set; }
         public string ID { get; set; }
-        public DateTime DateOfBirth { get; set; }
+
+        private DateTime _DateOfBirth;
+        public DateTime DateOfBirth {
+            set { _DateOfBirth = value; }
+            get => _DateOfBirth == DateTime.MinValue ? DateTime.Now : _DateOfBirth;
+        }
 
         public Property Property { get; set; } // where person live
+        public AVLTree<PropertyList> PropertyLists { get; set; }
 
-        public Person () { }
+        public Person ()
+        {
+            this.PropertyLists = new AVLTree<PropertyList>();
+        }
 
-        public Person (string ID, string Name = "Unknown")
+        public Person (string ID, string Name = "Unknown") : this()
         {
             this.ID = ID;
             this.Name = Name;
@@ -36,5 +45,7 @@ namespace Model
         {
             return this.ID;
         }
+
+        public string GetAddress() => this.Property != null ? this.Property.Address : "Does not have";
     }
 }

@@ -1,20 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using AVLTree;
 
 namespace Model
 {
-    internal class CadastralArea
+    class CadastralArea
     {
         public int ID { get; set; }
         public string Name { get; set; }
 
         public AVLTree<Property> Properties { get; set; }
+        public AVLTree<PropertyList> PropertyLists { get; set; }
 
-        public CadastralArea (int ID, string Name = "Unkonwn")
+        public CadastralArea (int ID, string Name = "Unknown")
         {
             this.ID = ID;
-            this.Name = Name;
+            this.Name = Name == "Unknown" ? Name + ID : Name;
+            this.Properties = new AVLTree<Property>();
+            this.PropertyLists = new AVLTree<PropertyList>();
+        }
+
+        public bool AddPropertyList(PropertyList p)
+        {
+            bool ret = this.PropertyLists.Insert(p);
+            foreach(Property prop in p.Properties.PostOrder()) 
+                this.Properties.Insert(prop);
+            return ret;
         }
 
         public override string ToString()

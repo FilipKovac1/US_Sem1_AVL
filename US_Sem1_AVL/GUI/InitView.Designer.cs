@@ -102,7 +102,7 @@
             this.inputCad.Name = "inputCad";
             this.inputCad.Size = new System.Drawing.Size(100, 20);
             this.inputCad.TabIndex = 6;
-            this.inputCad.Text = "1000";
+            this.inputCad.Text = "100";
             // 
             // inputPer
             // 
@@ -126,7 +126,7 @@
             this.inputProps.Name = "inputProps";
             this.inputProps.Size = new System.Drawing.Size(100, 20);
             this.inputProps.TabIndex = 9;
-            this.inputProps.Text = "1000";
+            this.inputProps.Text = "100";
             // 
             // InitView
             // 

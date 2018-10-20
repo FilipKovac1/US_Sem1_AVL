@@ -15,6 +15,18 @@ namespace Model
 
         public PropertyList PropertyList { get; set; } // property list where is property listed
 
+        public Property(int ID) { this.ID = ID; this.Occupants = new List<Person>(10); }
+        public Property(int ID, string Address) : this(ID) => this.Address = Address;
+        public Property(int ID, string Address, string Description) : this(ID, Address) => this.Description = Description;
+        public Property(int ID, string Address, string Description, PropertyList PropertyList) : this(ID, Address, Description) => this.PropertyList = PropertyList;
+
+        public bool AddOccupant (Person p)
+        {
+            this.Occupants.Add(p);
+            p.Property = this;
+            return true;
+        }
+
         public int CompareTo(INode<Property> Node)
         {
             Property p = (Property)Node;

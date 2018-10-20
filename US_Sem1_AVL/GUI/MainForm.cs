@@ -39,37 +39,45 @@ namespace US_Sem1_AVL
 
         private void btnFind_Click(object sender, EventArgs e)
         {
-            bool didNotFind = false;
             switch (comboTypes.SelectedIndex)
             {
                 case 0: // Persons
-                    Person p = this.Program.Persons.Find(new Person(textSearch.Text));
+                    Person p = this.Program.Find(new Person(textSearch.Text));
                     if (p == null)
-                    {
-                        didNotFind = true;
-                        break;
-                    }
+                        goto Error;
                     PersonView pv = new PersonView(p);
                     pv.onDispose += (person) => {
                         p = person;
                     };
                     pv.ShowDialog();
-                    break;
+                    goto Finish;
                 case 1: // Cadastral Area
-                    break;
+                    int search = 0;
+                    CadastralArea c = Int32.TryParse(textSearch.Text, out search) ? this.Program.Find(new CadastralAreaByID(new CadastralArea(search))) : this.Program.Find(new CadastralAreaByName(new CadastralArea(0, textSearch.Text)));
+                    if (c == null)
+                        goto Error;
+                    CadastralView cv = new CadastralView(c);
+                    cv.onDispose += (cArea, oldName) =>
+                    {
+                        if (oldName != c.Name)
+                            this.Program.UpdateCadastralArea(c, oldName);
+                    };
+                    cv.ShowDialog();
+                    goto Finish;
                 case 2: // Property list 
                     break;
                 case 3: // Property
                     break;
             }
 
-            if (didNotFind)
+            Error:
                 MessageBox.Show("Could not find specified item");
+            Finish:;
         }
 
         private void SetMainLabelText ()
         {
-            labelAllInfo.Text = String.Format("Cadastral Areas ({0}), Persons ({1}), ", Program.CadastralAreasByID.Count, Program.Persons.Count);
+            labelAllInfo.Text = String.Format("Cadastral Areas ({0}), Persons ({1}), ", Program.GetCount("CadastralArea"), Program.GetCount("Person"));
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -80,7 +88,7 @@ namespace US_Sem1_AVL
                     PersonView pv = new PersonView(null);
                     pv.onDispose += (person) =>
                     {
-                        if (this.Program.Persons.Insert(person))
+                        if (this.Program.AddPerson(person))
                         {
                             MessageBox.Show("Person was successfully added!");
                             this.SetMainLabelText();
@@ -91,6 +99,18 @@ namespace US_Sem1_AVL
                     pv.ShowDialog();
                     break;
                 case 1: // Cadastral Area
+                    CadastralView cv = new CadastralView();
+                    cv.onDispose += (cArea, name) =>
+                    {
+                        if (this.Program.AddCadastralArea(cArea))
+                        {
+                            MessageBox.Show("Cadastral area was successfully added!");
+                            this.SetMainLabelText();
+                        }
+                        else
+                            MessageBox.Show("Cadastral area could not be added, probably already added!");
+                    };
+                    cv.ShowDialog();
                     break;
                 case 2: // Property list 
                     break;

@@ -49,6 +49,18 @@
     <Compile Include="AVL_TREE\AVLTree.cs" />
     <Compile Include="AVL_TREE\INode.cs" />
     <Compile Include="AVL_TREE\Node.cs" />
+    <Compile Include="GUI\CadastralView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CadastralView.Designer.cs">
+      <DependentUpon>CadastralView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Dialog\InputDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Dialog\InputDialog.Designer.cs">
+      <DependentUpon>InputDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\InitView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +79,18 @@
     <Compile Include="GUI\PersonView.Designer.cs">
       <DependentUpon>PersonView.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PropertiesView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PropertiesView.Designer.cs">
+      <DependentUpon>PropertiesView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PropertyListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PropertyListView.Designer.cs">
+      <DependentUpon>PropertyListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\CadastralArea\CadastralArea.cs" />
     <Compile Include="Model\CadastralArea\CadastralAreaByID.cs" />
     <Compile Include="Model\CadastralArea\CadastralAreaByName.cs" />
@@ -78,6 +102,12 @@
     <Compile Include="Program\MyProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Static\Compare.cs" />
+    <EmbeddedResource Include="GUI\CadastralView.resx">
+      <DependentUpon>CadastralView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Dialog\InputDialog.resx">
+      <DependentUpon>InputDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\InitView.resx">
       <DependentUpon>InitView.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,6 +116,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PersonView.resx">
       <DependentUpon>PersonView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PropertiesView.resx">
+      <DependentUpon>PropertiesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PropertyListView.resx">
+      <DependentUpon>PropertyListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -41,9 +41,9 @@ namespace Model
             return true;
         }
 
-        public bool AddOwner (Person p, double share)
+        public bool AddOwner (Person p, double share = 1)
         {
-            if (p == null)
+            if (p == null || this.Owners.Where(o => o.Person.ID == p.ID).FirstOrDefault() != null) // if owner is already added
                 return false;
             if (Owners.Count == 0)
                 share = 1;
@@ -54,7 +54,7 @@ namespace Model
                     o.Share -= minusShare;
             }
             this.Owners.Add(new Owner(p, share));
-            p.PropertyLists.Insert(this);
+            p.AddPropertyList(this);
             return this.CheckShares();
         }
 
@@ -73,5 +73,24 @@ namespace Model
                 return o.Share;
             return 0;
         }
+
+        public void ChangeShare (Owner o, double newValue)
+        {
+            if (this.Owners.Count <= 1)
+                goto End;
+            if (newValue <= 0)
+            {
+                o.Person.PropertyLists.Delete(this);
+                this.Owners.Remove(o);
+            }
+            double diff = (o.Share - (newValue <= 0 ? 0 : newValue)) / (this.Owners.Count - 1);
+            o.Share = newValue;
+
+            foreach (Owner ow in this.Owners)
+                if (o.Person.ID != ow.Person.ID)
+                    ow.Share += diff;
+
+            End:;
+        } 
     }
 }

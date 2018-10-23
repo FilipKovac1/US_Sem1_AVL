@@ -15,7 +15,15 @@ namespace Model
             get => _DateOfBirth == DateTime.MinValue ? DateTime.Now : _DateOfBirth;
         }
 
-        public Property Property { get; set; } // where person live
+        private Property _Property;
+        public Property Property {
+            get { return _Property; }
+            set {
+                if (_Property != null && _Property.ID != value.ID)
+                    _Property.Occupants.Remove(this);
+                _Property = value;
+            }
+        } // where person live
         public AVLTree<PropertyList> PropertyLists { get; set; }
 
         public Person ()
@@ -47,5 +55,10 @@ namespace Model
         }
 
         public string GetAddress() => this.Property != null ? this.Property.Address : "Does not have";
+
+        public bool AddPropertyList(PropertyList propertyList)
+        {
+            return this.PropertyLists.Insert(propertyList);
+        }
     }
 }

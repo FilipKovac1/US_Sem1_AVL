@@ -112,6 +112,7 @@
             this.btnShowProperties.TabIndex = 14;
             this.btnShowProperties.Text = "Show Properties";
             this.btnShowProperties.UseVisualStyleBackColor = true;
+            this.btnShowProperties.Click += new System.EventHandler(this.btnShowProperties_Click);
             // 
             // label3
             // 

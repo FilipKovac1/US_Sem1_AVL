@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model;
+using US_Sem1_AVL.GUI.Dialog;
 
 namespace US_Sem1_AVL.GUI
 {
@@ -24,7 +25,7 @@ namespace US_Sem1_AVL.GUI
         {
             InitializeComponent();
             this.Properties = new LinkedList<Property>();
-            dataGridView1.DataSource = bindingSource1;
+            dataGridProperties.DataSource = bindingSource1;
             this.Person = null;
         }
 
@@ -91,9 +92,35 @@ namespace US_Sem1_AVL.GUI
             return row;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridProperties_RowClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex != -1)
+            {
 
+                Property p =
+                    this.Properties != null ?
+                        this.Properties.Where(po => po.ID == Int32.Parse(dataGridProperties.Rows[e.RowIndex].Cells[0].Value.ToString())).FirstOrDefault()
+                        :
+                        this.GetProperty(Int32.Parse(dataGridProperties.Rows[e.RowIndex].Cells["ID"].Value.ToString()));
+                if (p != null)
+                {
+                    PropertyView pv = new PropertyView(p);
+                    pv.onDispose += (ret) => this.ReloadData();
+                    pv.ShowDialog();
+                }
+            }
+        }
+
+        private Property GetProperty (int id)
+        {
+            Property ret = new Property(id);
+            foreach (PropertyList pl in this.PropertiesList) {
+                ret = pl.Properties.Find(ret);
+                if (ret.PropertyList != null)
+                    return ret;
+            }
+
+            return default(Property);
         }
     }
 }

@@ -118,7 +118,7 @@
             this.inputPLists.Name = "inputPLists";
             this.inputPLists.Size = new System.Drawing.Size(100, 20);
             this.inputPLists.TabIndex = 8;
-            this.inputPLists.Text = "100";
+            this.inputPLists.Text = "1000";
             // 
             // inputProps
             // 
@@ -126,7 +126,7 @@
             this.inputProps.Name = "inputProps";
             this.inputProps.Size = new System.Drawing.Size(100, 20);
             this.inputProps.TabIndex = 9;
-            this.inputProps.Text = "100";
+            this.inputProps.Text = "10";
             // 
             // InitView
             // 

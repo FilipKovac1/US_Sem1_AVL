@@ -63,7 +63,7 @@ namespace US_Sem1_AVL.GUI
 
             if (this.CadastralArea == null || this.CadastralArea.ID == 0)
                 MessageBox.Show("ID is mandatory field, please fill it up");
-            onDispose(this.CadastralArea, oldName);
+            onDispose?.Invoke(this.CadastralArea, oldName);
             this.Dispose();
             goto Finish;
 
@@ -75,6 +75,10 @@ namespace US_Sem1_AVL.GUI
         private void btnClose_Click(object sender, EventArgs e) => this.Dispose();
 
         private void btnShowPropertyLists_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void btnShowProperties_Click(object sender, EventArgs e)
         {
             if (this.CadastralArea.PropertyLists.Count > 0)
             {

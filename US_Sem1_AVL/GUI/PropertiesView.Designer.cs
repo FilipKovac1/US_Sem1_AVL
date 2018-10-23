@@ -1,4 +1,7 @@
-﻿namespace US_Sem1_AVL.GUI
+﻿using System;
+using System.Windows.Forms;
+
+namespace US_Sem1_AVL.GUI
 {
     partial class PropertiesView
     {
@@ -32,15 +35,15 @@
             this.propertyBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.propertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.propertyBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.propertyBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridProperties = new System.Windows.Forms.DataGridView();
             this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.addressDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.propertyBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource3)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,28 +59,24 @@
             // 
             this.propertyBindingSource1.DataSource = typeof(Model.Property);
             // 
-            // dataGridView1
+            // dataGridProperties
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridProperties.AllowUserToAddRows = false;
+            this.dataGridProperties.AllowUserToDeleteRows = false;
+            this.dataGridProperties.AllowUserToOrderColumns = true;
+            this.dataGridProperties.AutoGenerateColumns = false;
+            this.dataGridProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn,
             this.addressDataGridViewTextBoxColumn,
             this.descriptionDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.propertyBindingSource3;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(802, 455);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // propertyBindingSource3
-            // 
-            this.propertyBindingSource3.DataSource = typeof(Model.Property);
+            this.dataGridProperties.DataSource = this.propertyBindingSource3;
+            this.dataGridProperties.Location = new System.Drawing.Point(12, 12);
+            this.dataGridProperties.Name = "dataGridProperties";
+            this.dataGridProperties.ReadOnly = true;
+            this.dataGridProperties.Size = new System.Drawing.Size(802, 455);
+            this.dataGridProperties.TabIndex = 0;
+            this.dataGridProperties.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridProperties_RowClick);
             // 
             // iDDataGridViewTextBoxColumn
             // 
@@ -100,18 +99,22 @@
             this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
             this.descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // PropertyListView
+            // propertyBindingSource3
+            // 
+            this.propertyBindingSource3.DataSource = typeof(Model.Property);
+            // 
+            // PropertiesView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(826, 479);
-            this.Controls.Add(this.dataGridView1);
-            this.Name = "PropertyListView";
-            this.Text = "PropertyList";
+            this.Controls.Add(this.dataGridProperties);
+            this.Name = "PropertiesView";
+            this.Text = "Properties";
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource3)).EndInit();
             this.ResumeLayout(false);
 
@@ -121,7 +124,7 @@
         private System.Windows.Forms.BindingSource propertyBindingSource;
         private System.Windows.Forms.BindingSource propertyBindingSource1;
         private System.Windows.Forms.BindingSource propertyBindingSource2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridProperties;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn addressDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;

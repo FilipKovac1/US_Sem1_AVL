@@ -82,6 +82,12 @@ namespace US_Sem1_AVL
                 return false;
             return true;
         }
+        public bool AddPropertyList(PropertyList PropertyList)
+        {
+            foreach (Owner o in PropertyList.Owners)
+                o.Person.AddPropertyList(PropertyList);        
+            return PropertyList.CadastralArea.AddPropertyList(PropertyList);
+        }
 
         public int GetCount(string type)
         {

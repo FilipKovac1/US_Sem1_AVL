@@ -60,7 +60,7 @@ namespace US_Sem1_AVL.GUI
 
             if (this.Person == null || this.Person.ID == "")
                 MessageBox.Show("ID is mandatory field, please fill it up");
-            onDispose(this.Person);
+            onDispose?.Invoke(this.Person);
             this.Dispose(); // for now (next will do update or create :) ) 
         }
 
@@ -90,6 +90,16 @@ namespace US_Sem1_AVL.GUI
             } else
             {
                 MessageBox.Show("This should not happen");
+            }
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            if (this.Person.Property != null)
+            {
+                PropertyView pv = new PropertyView(this.Person.Property);
+                pv.onDispose += (prop) => this.inputAddress.Text = prop.Address;
+                pv.ShowDialog();
             }
         }
     }

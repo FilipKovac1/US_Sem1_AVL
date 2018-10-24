@@ -20,7 +20,7 @@ namespace Model
             get { return _Property; }
             set {
                 if (_Property != null && _Property.ID != value.ID)
-                    _Property.Occupants.Remove(this);
+                    _Property.Occupants.Delete(this);
                 _Property = value;
             }
         } // where person live

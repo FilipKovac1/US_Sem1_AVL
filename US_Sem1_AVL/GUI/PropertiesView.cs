@@ -75,7 +75,7 @@ namespace US_Sem1_AVL.GUI
                     table.Rows.Add(this.CreateRow(p, per, table));
             else if (this.PropertiesList != null)
                 foreach (PropertyList pl in this.PropertiesList)
-                    foreach (Property p in pl.Properties.PostOrder())
+                    foreach (Property p in pl.Properties.PreOrder())
                         table.Rows.Add(this.CreateRow(p, per, table));
 
             bindingSource1.DataSource = table;

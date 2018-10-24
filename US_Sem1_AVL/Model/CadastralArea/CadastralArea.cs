@@ -22,7 +22,7 @@ namespace Model
         public bool AddPropertyList(PropertyList p)
         {
             bool ret = this.PropertyLists.Insert(p);
-            foreach(Property prop in p.Properties.PostOrder()) 
+            foreach(Property prop in p.Properties.PreOrder()) 
                 this.Properties.Insert(prop);
             return ret;
         }

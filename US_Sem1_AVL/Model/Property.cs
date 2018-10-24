@@ -11,18 +11,18 @@ namespace Model
         public string Address { get; set; }
         public string Description { get; set; }
 
-        public List<Person> Occupants { get; set; } // people who live here 
+        public AVLTree<Person> Occupants { get; set; } // people who live here 
 
         public PropertyList PropertyList { get; set; } // property list where is property listed
 
-        public Property(int ID) { this.ID = ID; this.Occupants = new List<Person>(10); }
+        public Property(int ID) { this.ID = ID; this.Occupants = new AVLTree<Person>(); }
         public Property(int ID, string Address) : this(ID) => this.Address = Address;
         public Property(int ID, string Address, string Description) : this(ID, Address) => this.Description = Description;
         public Property(int ID, string Address, string Description, PropertyList PropertyList) : this(ID, Address, Description) => this.PropertyList = PropertyList;
 
         public bool AddOccupant (Person p)
         {
-            this.Occupants.Add(p);
+            this.Occupants.Insert(p);
             p.Property = this;
             return true;
         }

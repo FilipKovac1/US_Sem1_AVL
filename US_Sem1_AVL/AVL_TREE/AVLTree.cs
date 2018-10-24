@@ -549,6 +549,7 @@ namespace AVLTree
                     act = act.Right;
             }
             return act.Data;
-        } 
+        }
+        public T GetRoot() => Root == null ? default(T) : Root.Data;
     }
 }

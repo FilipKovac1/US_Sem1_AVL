@@ -12,13 +12,13 @@ namespace Model
         public CadastralArea CadastralArea { get; set; } 
         public AVLTree<Property> Properties { get; set; } // properties on property list
 
-        public List<Owner> Owners { get; set; } // who owns this property (share percentage is in Share list)
+        public AVLTree<Owner> Owners { get; set; } // who owns this property (share percentage is in Share list)
 
-        public PropertyList(int ID) { this.ID = ID; this.Properties = new AVLTree<Property>(); this.Owners = new List<Owner>(5); }
+        public PropertyList(int ID) { this.ID = ID; this.Properties = new AVLTree<Property>(); this.Owners = new AVLTree<Owner>(); }
 
         public PropertyList(int ID, CadastralArea c) : this(ID) => this.CadastralArea = c; 
 
-        public PropertyList (int ID, CadastralArea c, AVLTree<Property> Properties, List<Owner> Owners) : this(ID, c)
+        public PropertyList (int ID, CadastralArea c, AVLTree<Property> Properties, AVLTree<Owner> Owners) : this(ID, c)
         {
             this.Properties = Properties;
             this.Owners = Owners;
@@ -34,7 +34,7 @@ namespace Model
         private bool CheckShares ()
         {
             double sum = Owners.Count == 0 ? 1 : 0;
-            foreach (Owner o in Owners)
+            foreach (Owner o in Owners.PreOrder())
                 sum += o.Share;
             if (sum != 1)
                 return false;
@@ -43,17 +43,17 @@ namespace Model
 
         public bool AddOwner (Person p, double share = 1)
         {
-            if (p == null || this.Owners.Where(o => o.Person.ID == p.ID).FirstOrDefault() != null) // if owner is already added
+            if (p == null || this.Owners.Find(new Owner(p)) != null) // if owner is already added
                 return false;
             if (Owners.Count == 0)
                 share = 1;
             else
             {
                 double minusShare = share / (double)Owners.Count;
-                foreach (Owner o in Owners)
+                foreach (Owner o in Owners.PreOrder())
                     o.Share -= minusShare;
             }
-            this.Owners.Add(new Owner(p, share));
+            this.Owners.Insert(new Owner(p, share));
             p.AddPropertyList(this);
             return this.CheckShares();
         }
@@ -68,7 +68,7 @@ namespace Model
 
         public double GetOwnersShare(Person person)
         {
-            Owner o = this.Owners.Where(w => w.Person.ID == person.ID).FirstOrDefault();
+            Owner o = this.Owners.Find(new Owner(person));
             if (o != null)
                 return o.Share;
             return 0;
@@ -81,12 +81,12 @@ namespace Model
             if (newValue <= 0)
             {
                 o.Person.PropertyLists.Delete(this);
-                this.Owners.Remove(o);
+                this.Owners.Delete(o);
             }
             double diff = (o.Share - (newValue <= 0 ? 0 : newValue)) / (this.Owners.Count - 1);
             o.Share = newValue;
 
-            foreach (Owner ow in this.Owners)
+            foreach (Owner ow in this.Owners.PreOrder())
                 if (o.Person.ID != ow.Person.ID)
                     ow.Share += diff;
 

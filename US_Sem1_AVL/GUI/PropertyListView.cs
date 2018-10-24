@@ -77,7 +77,7 @@ namespace US_Sem1_AVL.GUI
 
             // Add rows.
             if (this.PropertyList.Owners.Count > 0)
-                foreach (Owner o in this.PropertyList.Owners)
+                foreach (Owner o in this.PropertyList.Owners.PreOrder())
                     table.Rows.Add(this.CreateOwnerRow(o, table));
 
             BindSourceOwners.DataSource = table;
@@ -99,7 +99,7 @@ namespace US_Sem1_AVL.GUI
                     MessageBox.Show("To change share values, property list has to have at least 2 owners");
                 else
                 {
-                    Owner o = this.PropertyList.Owners.Where(owner => owner.Person.ID == Owners.Rows[e.RowIndex].Cells["ID"].Value.ToString()).FirstOrDefault();
+                    Owner o = this.PropertyList.Owners.Find(new Owner(new Person(Owners.Rows[e.RowIndex].Cells["ID"].Value.ToString())));
                     if (o != null)
                     {
                         InputDialog id = new InputDialog("New share", o.Share.ToString());

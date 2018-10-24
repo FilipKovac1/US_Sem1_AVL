@@ -13,7 +13,7 @@ namespace Model
         public Person Person { get; set; }
         public double Share { get; set; }
 
-        public Owner (Person Person, double Share)
+        public Owner (Person Person, double Share = 1)
         {
             this.Person = Person;
             this.Share = Share;

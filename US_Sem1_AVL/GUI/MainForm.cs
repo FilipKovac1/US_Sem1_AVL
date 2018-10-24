@@ -169,8 +169,6 @@ namespace US_Sem1_AVL
                     };
                     id.ShowDialog();
                     break;
-                case 3: // Property
-                    break;
             }
         }
 

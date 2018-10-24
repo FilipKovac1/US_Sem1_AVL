@@ -64,8 +64,7 @@
             this.comboTypes.Items.AddRange(new object[] {
             "Person",
             "Cadastral Area",
-            "Property List",
-            "Property"});
+            "Property List"});
             this.comboTypes.Location = new System.Drawing.Point(12, 417);
             this.comboTypes.Name = "comboTypes";
             this.comboTypes.Size = new System.Drawing.Size(121, 21);

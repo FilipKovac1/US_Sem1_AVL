@@ -56,7 +56,7 @@ namespace US_Sem1_AVL.GUI
             });
 
             DataRow row = null;
-            foreach (Person p in this.Property.Occupants)
+            foreach (Person p in this.Property.Occupants.PreOrder())
             {
                 row = dt.NewRow();
                 row["ID"] = p.ID;

@@ -45,7 +45,7 @@ namespace US_Sem1_AVL
                                 for (int k = 0; k < propertyCount; k++)
                                 {
                                     p = new Property(j + k, "Address" + (j + k), "Unknown", pl);
-                                    p.AddOccupant(pl.Owners.FirstOrDefault().Person);
+                                    p.AddOccupant(pl.Owners.GetRoot().Person);
                                     pl.AddProperty(p);
                                 }
                             }
@@ -84,7 +84,7 @@ namespace US_Sem1_AVL
         }
         public bool AddPropertyList(PropertyList PropertyList)
         {
-            foreach (Owner o in PropertyList.Owners)
+            foreach (Owner o in PropertyList.Owners.PreOrder())
                 o.Person.AddPropertyList(PropertyList);        
             return PropertyList.CadastralArea.AddPropertyList(PropertyList);
         }

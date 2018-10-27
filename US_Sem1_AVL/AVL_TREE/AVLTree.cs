@@ -55,7 +55,7 @@ namespace AVLTree
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public bool Insert (T Data)
+        public bool Add (T Data)
         {
             if (this.Root == null) { // if root is null parent does not matter
                 this.Root = new Node<T>(Data);
@@ -144,7 +144,7 @@ namespace AVLTree
             return true;
         }
 
-        public bool Delete (T Data)
+        public bool Remove (T Data)
         {
             if (this.Root == null)
                 return false;
@@ -532,6 +532,31 @@ namespace AVLTree
             return ret;
 
         }
+        private LinkedList<Node<T>> PreOrderNode()
+        {
+            LinkedList<Node<T>> ret = new LinkedList<Node<T>>();
+            if (this.Root == null)
+                return ret;
+            Stack s = new Stack(this.Count / 2); // cannot be more than half of the nodes in the stack
+            Node<T> act = this.Root;
+            s.Push(act);
+            int count = 0;
+            while (count < this.Count) // go through all items in the tree
+            {
+                act = (Node<T>)s.Pop(); // get last added to print
+
+                ret.AddLast(act);
+                count++;
+
+                if (act.Right != null)
+                    s.Push(act.Right);
+                if (act.Left != null)
+                    s.Push(act.Left);
+            }
+
+            return ret;
+
+        }
         public T Find()
         {
             if (this.Root == null)
@@ -551,5 +576,19 @@ namespace AVLTree
             return act.Data;
         }
         public T GetRoot() => Root == null ? default(T) : Root.Data;
+
+        public bool TestAVL()
+        {
+            foreach (Node<T> node in this.PreOrderNode())
+            {
+                this.UpdateHeight(node);
+                if (!this.CheckAVL(node))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckAVL(Node<T> Node) => Math.Abs(this.Height(Node.Left) - this.Height(Node.Right)) <= 1;
     }
 }

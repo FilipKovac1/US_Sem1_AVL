@@ -20,7 +20,7 @@ namespace Model
             get { return _Property; }
             set {
                 if (_Property != null && _Property.ID != value.ID)
-                    _Property.Occupants.Delete(this);
+                    _Property.Occupants.Remove(this);
                 _Property = value;
             }
         } // where person live
@@ -58,7 +58,7 @@ namespace Model
 
         public bool AddPropertyList(PropertyList propertyList)
         {
-            return this.PropertyLists.Insert(propertyList);
+            return this.PropertyLists.Add(propertyList);
         }
     }
 }

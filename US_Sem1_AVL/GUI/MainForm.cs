@@ -19,28 +19,32 @@ namespace US_Sem1_AVL
 
         private MyProgram Program { get; set; }
 
+        private BindingSource BindSourcePersons = new BindingSource();
+        private BindingSource BindSourceCadastralAreas = new BindingSource();
+        private DataRow row;
+
         public MainForm()
         {
             InitializeComponent();
-            comboTreePrint.SelectedIndex = 2;
-            comboTrees.SelectedIndex = 0;
-            comboTypes.SelectedIndex = 0;
             InitView init = new InitView();
             init.onDispose += (counts) =>
             {
                 if (counts == null)
                     Program = new MyProgram();
-                else
+                else 
                     Program = new MyProgram(true, counts[0], counts[1], counts[2], counts[3]);
 
-                this.SetMainLabelText();
+                comboPType.SelectedIndex = 0;
+                comboCAType.SelectedIndex = 0;
+                comboTypes.SelectedIndex = 0;
+
+                this.dataGridPerson.DataSource = BindSourcePersons;
+                this.dataGridCA.DataSource = BindSourceCadastralAreas;
+
+                this.InitPersons();
+                this.InitCadastralAreas();
             };
             init.ShowDialog();
-        }
-
-        private void SetMainLabelText ()
-        {
-            labelAllInfo.Text = String.Format("Cadastral Areas ({0}), Persons ({1}), ", Program.GetCount("CadastralArea"), Program.GetCount("Person"));
         }
 
         private void btnFind_Click(object sender, EventArgs e)
@@ -97,6 +101,7 @@ namespace US_Sem1_AVL
                     id.ShowDialog();
                     goto Finish;
                 case 3: // Property
+                    // TODO number 1
                     break;
             }
 
@@ -116,7 +121,7 @@ namespace US_Sem1_AVL
                         if (this.Program.AddPerson(person))
                         {
                             MessageBox.Show("Person was successfully added!");
-                            this.SetMainLabelText();
+                            this.InitPersons();
                         } 
                         else
                             MessageBox.Show("Person could not be added, probably already added!");
@@ -130,7 +135,7 @@ namespace US_Sem1_AVL
                         if (this.Program.AddCadastralArea(cArea))
                         {
                             MessageBox.Show("Cadastral area was successfully added!");
-                            this.SetMainLabelText();
+                            this.InitCadastralAreas();
                         }
                         else
                             MessageBox.Show("Cadastral area could not be added, probably already added!");
@@ -153,7 +158,6 @@ namespace US_Sem1_AVL
                                         if (this.Program.AddPropertyList(pl))
                                         {
                                             MessageBox.Show("Property list was successfully added!");
-                                            this.SetMainLabelText();
                                         }
                                         else
                                             MessageBox.Show("Cadastral area could not be added, probably already added!");
@@ -173,5 +177,117 @@ namespace US_Sem1_AVL
         }
 
         public Person FindPerson(Person p) => this.Program.Find(p);
+
+        private void InitPersons()
+        {
+            labelPersons.Text = String.Format("Persons ({0}):", Program.Persons.Count);
+            DataTable table = new DataTable();
+
+            table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(string)),
+                new DataColumn("Name", typeof(string)),
+                new DataColumn("Birthday", typeof(string)),
+                new DataColumn("Address", typeof(string)),
+                new DataColumn("Property List count", typeof(int)),
+            });
+
+            // Add rows.
+            LinkedList<Person> ps = null;
+            switch (comboPType.SelectedItem)
+            {
+                case "PreOrder":
+                    ps = this.Program.Persons.PreOrder();
+                    break;
+                case "PostOrder":
+                    ps = this.Program.Persons.PostOrder();
+                    break;
+                case "InOrder":
+                    ps = this.Program.Persons.InOrder();
+                    break;
+            }
+            if (ps.Count > 0)
+                foreach (Person p in ps)
+                    table.Rows.Add(this.CreatePersonRow(p, table));
+
+            BindSourcePersons.DataSource = table;
+        }
+        private void InitCadastralAreas()
+        {
+            labelCACount.Text = String.Format("Cadastral Areas ({0}):", Program.CadastralAreasByID.Count);
+            DataTable table = new DataTable();
+
+            table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("Name", typeof(string)),
+                new DataColumn("Property List count", typeof(int)),
+                new DataColumn("Properties count", typeof(int)),
+            });
+
+            // Add rows.
+            LinkedList<CadastralAreaByName> cans = null;
+            switch (comboCAType.SelectedItem)
+            {
+                case "PreOrder":
+                    cans = this.Program.CadastralAreasByName.PreOrder();
+                    break;
+                case "PostOrder":
+                    cans = this.Program.CadastralAreasByName.PostOrder();
+                    break;
+                case "InOrder":
+                    cans = this.Program.CadastralAreasByName.InOrder();
+                    break;
+            }
+            if (cans.Count > 0)
+                foreach (CadastralAreaByName cao in cans)
+                    table.Rows.Add(this.CreateCARow(cao.CadastralArea, table));
+
+            BindSourceCadastralAreas.DataSource = table;
+        }
+
+        private DataRow CreatePersonRow (Person p, DataTable t)
+        {
+            this.row = t.NewRow();
+            row["ID"] = p.ID;
+            row["Name"] = p.Name;
+            row["Birthday"] = p.DateOfBirth.ToString("dd-MM-yyyy");
+            row["Address"] = p.Property == null ? "Without" : p.Property?.Address;
+            row["Property List count"] = p.PropertyLists.Count;
+            return this.row;
+        }
+
+        private DataRow CreateCARow (CadastralArea ca, DataTable t)
+        {
+            this.row = t.NewRow();
+            row["ID"] = ca.ID;
+            row["Name"] = ca.Name;
+            row["Property List count"] = ca.PropertyLists.Count;
+            row["Properties count"] = ca.Properties.Count;
+            return this.row;
+        }
+
+        private void comboCAType_SelectedIndexChanged(object sender, EventArgs e) => InitCadastralAreas();
+
+        private void comboPType_SelectedIndexChanged(object sender, EventArgs e) => InitPersons();
+
+        private void dataGridPerson_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.RowIndex != -1)
+            {
+                PersonView pv = new PersonView(this.Program.Find(new Person(dataGridPerson.Rows[e.RowIndex].Cells["ID"].Value.ToString())));
+                pv.onDispose += (p) => this.InitPersons();
+                pv.ShowDialog();
+            }
+        }
+        private void dataGridCA_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.RowIndex != -1)
+            {
+                CadastralView cv = new CadastralView(this.Program.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(dataGridCA.Rows[e.RowIndex].Cells["ID"].Value.ToString())))));
+                cv.onDispose += (ca, c) => this.InitCadastralAreas();
+                cv.ShowDialog();
+            }
+        }
     }
 }

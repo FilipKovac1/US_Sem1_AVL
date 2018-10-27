@@ -53,7 +53,7 @@ namespace Model
                 foreach (Owner o in Owners.PreOrder())
                     o.Share -= minusShare;
             }
-            this.Owners.Insert(new Owner(p, share));
+            this.Owners.Add(new Owner(p, share));
             p.AddPropertyList(this);
             return this.CheckShares();
         }
@@ -62,8 +62,8 @@ namespace Model
         {
             if (p == null)
                 return false;
-            this.CadastralArea.Properties.Insert(p);
-            return this.Properties.Insert(p);
+            this.CadastralArea.Properties.Add(p);
+            return this.Properties.Add(p);
         }
 
         public double GetOwnersShare(Person person)
@@ -80,8 +80,8 @@ namespace Model
                 goto End;
             if (newValue <= 0)
             {
-                o.Person.PropertyLists.Delete(this);
-                this.Owners.Delete(o);
+                o.Person.PropertyLists.Remove(this);
+                this.Owners.Remove(o);
             }
             double diff = (o.Share - (newValue <= 0 ? 0 : newValue)) / (this.Owners.Count - 1);
             o.Share = newValue;

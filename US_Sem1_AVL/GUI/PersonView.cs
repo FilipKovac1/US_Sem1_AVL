@@ -70,21 +70,22 @@ namespace US_Sem1_AVL.GUI
         {
             if (this.Person.PropertyLists.Count > 0)
             {
-                InputDialog id = new InputDialog("Catastral area name:");
+                InputDialog id = new InputDialog("Catastral area name:", "", true);
                 id.onDispose += (search) =>
                 {
+                    List<PropertyList> pl = null;
                     if (search != "")
+                        pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.Name == search).ToList();
+                    else
+                        pl = this.Person.PropertyLists.PreOrder().ToList();
+                        
+                    if (pl.Count > 0)
                     {
-                        List<PropertyList> pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.Name == search).ToList();
-                        if (pl.Count > 0)
-                        {
-                            PropertiesView plv = new PropertiesView(pl, this.Person, 0);
-                            plv.ShowDialog();
-                        } else
-                        {
-                            MessageBox.Show("There is no properties in this cadastral area");
-                        }
+                        PropertiesView plv = new PropertiesView(pl, this.Person, 0);
+                        plv.ShowDialog();
                     }
+                    else
+                        MessageBox.Show("There is no properties in this cadastral area");
                 };
                 id.ShowDialog();
             } else

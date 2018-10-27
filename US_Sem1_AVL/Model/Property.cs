@@ -22,7 +22,7 @@ namespace Model
 
         public bool AddOccupant (Person p)
         {
-            this.Occupants.Insert(p);
+            this.Occupants.Add(p);
             p.Property = this;
             return true;
         }

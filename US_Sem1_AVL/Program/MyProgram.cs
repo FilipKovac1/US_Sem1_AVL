@@ -8,9 +8,9 @@ namespace US_Sem1_AVL
     class MyProgram
     {
 
-        private AVLTree<Person> Persons { get; set; }
-        private AVLTree<CadastralAreaByID> CadastralAreasByID { get; set; }
-        private AVLTree<CadastralAreaByName> CadastralAreasByName { get; set; }
+        public AVLTree<Person> Persons { get; set; }
+        public AVLTree<CadastralAreaByID> CadastralAreasByID { get; set; }
+        public AVLTree<CadastralAreaByName> CadastralAreasByName { get; set; }
 
         public MyProgram ()
         {
@@ -26,17 +26,17 @@ namespace US_Sem1_AVL
                 Random personsR = new Random(100);
                 Random cadR = new Random(101);
                 for (int i = 0; i < personsCount; i++)
-                    Persons.Insert(new Person(personsR.Next(personsCount * 10).ToString()));
+                    Persons.Add(new Person(personsR.Next(personsCount * 10).ToString()));
                 CadastralArea c = null;
                 PropertyList pl = null;
                 Property p = null;
                 for (int i = 0; i < cadastralCount; i++)
                 {
                     c = new CadastralArea(cadR.Next(cadastralCount + 10));
-                    if (CadastralAreasByID.Insert(new CadastralAreaByID(c)))
+                    if (CadastralAreasByID.Add(new CadastralAreaByID(c)))
                     {
-                        CadastralAreasByName.Insert(new CadastralAreaByName(c));
-                        for (int j = 0; j < propertyListCount; j++)
+                        CadastralAreasByName.Add(new CadastralAreaByName(c));
+                        for (int j = 1; j <= propertyListCount; j++)
                         {
                             pl = new PropertyList(j, c);
                             if (c.AddPropertyList(pl))
@@ -44,7 +44,7 @@ namespace US_Sem1_AVL
                                 pl.AddOwner(Persons.Find(), 1);
                                 for (int k = 0; k < propertyCount; k++)
                                 {
-                                    p = new Property(j + k, "Address" + (j + k), "Unknown", pl);
+                                    p = new Property(Int32.Parse(j + "" + k), "Address" + (j + k), "Unknown", pl);
                                     p.AddOccupant(pl.Owners.GetRoot().Person);
                                     pl.AddProperty(p);
                                 }
@@ -52,13 +52,18 @@ namespace US_Sem1_AVL
                         }
                     }
                 }
+
+                if (!this.Persons.TestAVL())
+                    Console.WriteLine("Strom nie je AVL");
+                else
+                    Console.WriteLine("Strom je vyvazeny");
             } 
         }
 
         public void UpdateCadastralArea(CadastralArea c, string oldName)
         {
-            this.CadastralAreasByName.Delete(new CadastralAreaByName(new CadastralArea(0, oldName)));
-            this.CadastralAreasByName.Insert(new CadastralAreaByName(c));
+            this.CadastralAreasByName.Remove(new CadastralAreaByName(new CadastralArea(0, oldName)));
+            this.CadastralAreasByName.Add(new CadastralAreaByName(c));
         }
 
         public Person Find(Person data) => this.Persons.Find(data);
@@ -73,12 +78,12 @@ namespace US_Sem1_AVL
             return c?.CadastralArea;
         }
 
-        public bool AddPerson(Person Person) => this.Persons.Insert(Person);
+        public bool AddPerson(Person Person) => this.Persons.Add(Person);
         public bool AddCadastralArea(CadastralArea CadastralArea)
         {
-            if (!this.CadastralAreasByID.Insert(new CadastralAreaByID(CadastralArea)))
+            if (!this.CadastralAreasByID.Add(new CadastralAreaByID(CadastralArea)))
                 return false;
-            if (!this.CadastralAreasByName.Insert(new CadastralAreaByName(CadastralArea)))
+            if (!this.CadastralAreasByName.Add(new CadastralAreaByName(CadastralArea)))
                 return false;
             return true;
         }
@@ -88,17 +93,6 @@ namespace US_Sem1_AVL
                 o.Person.AddPropertyList(PropertyList);        
             return PropertyList.CadastralArea.AddPropertyList(PropertyList);
         }
-
-        public int GetCount(string type)
-        {
-            switch (type)
-            {
-                case "CadastralArea":
-                    return this.CadastralAreasByID.Count;
-                case "Person":
-                    return this.Persons.Count;
-            }
-            return 0;
-        }
+        
     }
 }

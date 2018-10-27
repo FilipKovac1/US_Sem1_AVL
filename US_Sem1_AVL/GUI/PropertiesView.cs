@@ -84,11 +84,11 @@ namespace US_Sem1_AVL.GUI
         private DataRow CreateRow (Property p, bool per, DataTable table)
         {
             row = table.NewRow();
-            row["ID"] = p.ID;
-            row["Address"] = p.Address;
-            row["Description"] = p.Description;
+            row[0] = p.ID;
+            row[1] = p.Address;
+            row[2] = p.Description;
             if (per)
-                row["Share"] = (p.PropertyList.GetOwnersShare(this.Person) * 100) + " %";
+                row[3] = (p.PropertyList.GetOwnersShare(this.Person) * 100) + " %";
             return row;
         }
 
@@ -101,7 +101,7 @@ namespace US_Sem1_AVL.GUI
                     this.Properties != null ?
                         this.Properties.Where(po => po.ID == Int32.Parse(dataGridProperties.Rows[e.RowIndex].Cells[0].Value.ToString())).FirstOrDefault()
                         :
-                        this.GetProperty(Int32.Parse(dataGridProperties.Rows[e.RowIndex].Cells["ID"].Value.ToString()));
+                        this.GetProperty(Int32.Parse(dataGridProperties.Rows[e.RowIndex].Cells[0].Value.ToString()));
                 if (p != null)
                 {
                     PropertyView pv = new PropertyView(p);

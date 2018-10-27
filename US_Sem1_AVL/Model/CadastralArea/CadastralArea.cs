@@ -21,9 +21,9 @@ namespace Model
 
         public bool AddPropertyList(PropertyList p)
         {
-            bool ret = this.PropertyLists.Insert(p);
+            bool ret = this.PropertyLists.Add(p);
             foreach(Property prop in p.Properties.PreOrder()) 
-                this.Properties.Insert(prop);
+                this.Properties.Add(prop);
             return ret;
         }
 

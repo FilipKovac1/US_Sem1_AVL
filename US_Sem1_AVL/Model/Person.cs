@@ -26,10 +26,7 @@ namespace Model
         } // where person live
         public AVLTree<PropertyList> PropertyLists { get; set; }
 
-        public Person ()
-        {
-            this.PropertyLists = new AVLTree<PropertyList>();
-        }
+        public Person () => this.PropertyLists = new AVLTree<PropertyList>(); 
 
         public Person (string ID, string Name = "Unknown") : this()
         {
@@ -56,9 +53,8 @@ namespace Model
 
         public string GetAddress() => this.Property != null ? this.Property.Address : "Does not have";
 
-        public bool AddPropertyList(PropertyList propertyList)
-        {
-            return this.PropertyLists.Add(propertyList);
-        }
+        public bool AddPropertyList(PropertyList propertyList) => this.PropertyLists.Add(propertyList);
+
+        public bool RemovePropertyList(PropertyList propertyList) => this.PropertyLists.Remove(propertyList);
     }
 }

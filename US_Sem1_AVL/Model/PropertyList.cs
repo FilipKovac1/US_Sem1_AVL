@@ -41,6 +41,16 @@ namespace Model
             return true;
         }
 
+        public bool ChangeOwner(Person oldOwner, Person newOwner)
+        {
+            Owner o = this.Owners.Find(new Owner(oldOwner));
+            o.Person = newOwner;
+            oldOwner.RemovePropertyList(this);
+            newOwner.AddPropertyList(this);
+
+            return true;
+        }
+
         public bool AddOwner (Person p, double share = 1)
         {
             if (p == null || this.Owners.Find(new Owner(p)) != null) // if owner is already added
@@ -79,13 +89,17 @@ namespace Model
         {
             if (this.Owners.Count <= 1)
                 goto End;
+            double diff = 0.0;
             if (newValue <= 0)
             {
                 o.Person.PropertyLists.Remove(this);
                 this.Owners.Remove(o);
+                diff = o.Share / this.Owners.Count;
+            } else
+            {
+                diff = (o.Share - (newValue <= 0 ? 0 : newValue)) / (this.Owners.Count - 1);
+                o.Share = newValue;
             }
-            double diff = (o.Share - (newValue <= 0 ? 0 : newValue)) / (this.Owners.Count - 1);
-            o.Share = newValue;
 
             foreach (Owner ow in this.Owners.PreOrder())
                 if (o.Person.ID != ow.Person.ID)
@@ -106,6 +120,14 @@ namespace Model
             if (!this.CadastralArea.Properties.Remove(property))
                 return false;
             return this.Properties.Remove(property);
+        }
+
+        public bool DeleteOwner(string personId)
+        {
+            int changed = this.Owners.Count;
+            this.ChangeShare(this.Owners.Find(new Owner(new Person(personId))), 0);
+            
+            return changed > this.Owners.Count;
         }
     }
 }

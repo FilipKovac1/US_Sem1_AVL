@@ -211,5 +211,17 @@ namespace US_Sem1_AVL.GUI
             };
             id.ShowDialog();
         }
+
+        private void btnRemoveOwner_Click(object sender, EventArgs e)
+        {
+            int rowIndex = Owners.CurrentCell.RowIndex;
+            if (rowIndex > -1)
+            {
+                if (this.PropertyList.DeleteOwner(Owners.Rows[rowIndex].Cells["ID"].Value.ToString()))
+                {
+                    this.ReloadData();
+                }
+            }
+        }
     }
 }

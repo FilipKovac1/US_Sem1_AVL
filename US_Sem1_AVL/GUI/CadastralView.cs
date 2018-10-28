@@ -35,7 +35,7 @@ namespace US_Sem1_AVL.GUI
                 inputPListsCount.Text = this.CadastralArea.PropertyLists.Count.ToString();
                 inputPropCount.Text = this.CadastralArea.Properties.Count.ToString();
 
-                btnShowPropertyLists.Visible = this.CadastralArea.Properties.Count > 0;
+                btnShowProperties.Visible = this.CadastralArea.Properties.Count > 0;
             }
             else
             {
@@ -46,7 +46,7 @@ namespace US_Sem1_AVL.GUI
                 inputPListsCount.Text = "0";
                 inputPropCount.Text = "0";
 
-                btnShowPropertyLists.Visible = false;
+                btnShowProperties.Visible = false;
             }
         }
 

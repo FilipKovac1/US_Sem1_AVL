@@ -139,5 +139,51 @@ namespace US_Sem1_AVL.GUI
                 caid.ShowDialog();
             }
         }
+
+        private void btnChangeProperty_Click(object sender, EventArgs e)
+        {
+            if (form != null)
+            {
+                InputDialog caid = new InputDialog("Cadastral area id:");
+                caid.onDispose += (caID) =>
+                {
+                    if (Int32.TryParse(caID, out int caIDint))
+                    {
+                        CadastralArea ca = new CadastralArea(caIDint);
+                        ca = this.form.FindCadastralArea(new CadastralAreaByID(ca));
+                        if (ca != null)
+                        {
+                            InputDialog pid = new InputDialog("Property id:");
+                            pid.onDispose += (pID) =>
+                            {
+                                Property p = ca.FindProperty(pID);
+                                if (p != null)
+                                {
+                                    InputDialog ownerId = new InputDialog("New owner (person.id):");
+                                    ownerId.onDispose += (newOwnerID) =>
+                                    {
+                                        Person per = new Person(newOwnerID);
+                                        per = form.FindPerson(per);
+                                        if (per != null)
+                                            p.ChangeOwner(this.Person, per);
+                                        else
+                                            MessageBox.Show("Could not find this person/owner");
+                                    };
+                                    ownerId.ShowDialog();
+                                }
+                                else
+                                    MessageBox.Show("Could not find this property");
+                            };
+                            pid.ShowDialog();
+                        }
+                        else
+                            MessageBox.Show("This cadastral area doesn't exist");
+                    }
+                    else
+                        MessageBox.Show("Input value has to be integer");
+                };
+                caid.ShowDialog();
+            }
+        }
     }
 }

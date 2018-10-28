@@ -124,10 +124,11 @@ namespace US_Sem1_AVL.GUI
         private Property GetProperty (int id)
         {
             Property ret = new Property(id);
+            Property temp = null;
             foreach (PropertyList pl in this.PropertiesList) {
-                ret = pl.Properties.Find(ret);
-                if (ret.PropertyList != null)
-                    return ret;
+                temp = pl.Properties.Find(ret);
+                if (temp != null && temp.PropertyList != null)
+                    return temp;
             }
 
             return default(Property);

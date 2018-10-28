@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnShowPropertyLists = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnShowProperties = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -83,16 +82,6 @@
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnShowPropertyLists
-            // 
-            this.btnShowPropertyLists.Location = new System.Drawing.Point(17, 165);
-            this.btnShowPropertyLists.Name = "btnShowPropertyLists";
-            this.btnShowPropertyLists.Size = new System.Drawing.Size(115, 23);
-            this.btnShowPropertyLists.TabIndex = 12;
-            this.btnShowPropertyLists.Text = "Show Property Lists";
-            this.btnShowPropertyLists.UseVisualStyleBackColor = true;
-            this.btnShowPropertyLists.Click += new System.EventHandler(this.btnShowPropertyLists_Click);
             // 
             // btnOk
             // 
@@ -159,7 +148,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnShowProperties);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnShowPropertyLists);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.inputName);
             this.Controls.Add(this.inputID);
@@ -179,7 +167,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnShowPropertyLists;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnShowProperties;
         private System.Windows.Forms.Label label3;

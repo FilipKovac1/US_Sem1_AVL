@@ -43,6 +43,7 @@ namespace US_Sem1_AVL.GUI
             this.btnAddProperty = new System.Windows.Forms.Button();
             this.btnFindProperty = new System.Windows.Forms.Button();
             this.btnDeleteProperty = new System.Windows.Forms.Button();
+            this.btnRemoveOwner = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Owners)).BeginInit();
             this.SuspendLayout();
             // 
@@ -165,11 +166,22 @@ namespace US_Sem1_AVL.GUI
             this.btnDeleteProperty.UseVisualStyleBackColor = true;
             this.btnDeleteProperty.Click += new System.EventHandler(this.btnDeleteProperty_Click);
             // 
+            // btnRemoveOwner
+            // 
+            this.btnRemoveOwner.Location = new System.Drawing.Point(224, 248);
+            this.btnRemoveOwner.Name = "btnRemoveOwner";
+            this.btnRemoveOwner.Size = new System.Drawing.Size(97, 23);
+            this.btnRemoveOwner.TabIndex = 19;
+            this.btnRemoveOwner.Text = "Remove Owner";
+            this.btnRemoveOwner.UseVisualStyleBackColor = true;
+            this.btnRemoveOwner.Click += new System.EventHandler(this.btnRemoveOwner_Click);
+            // 
             // PropertyListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(336, 414);
+            this.Controls.Add(this.btnRemoveOwner);
             this.Controls.Add(this.btnDeleteProperty);
             this.Controls.Add(this.btnFindProperty);
             this.Controls.Add(this.btnAddProperty);
@@ -209,5 +221,6 @@ namespace US_Sem1_AVL.GUI
         private Button btnAddProperty;
         private Button btnFindProperty;
         private Button btnDeleteProperty;
+        private Button btnRemoveOwner;
     }
 }

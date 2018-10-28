@@ -40,6 +40,7 @@
             this.btnShowProperties = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnChangeAddress = new System.Windows.Forms.Button();
+            this.btnChangeProperty = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -154,11 +155,22 @@
             this.btnChangeAddress.UseVisualStyleBackColor = true;
             this.btnChangeAddress.Click += new System.EventHandler(this.btnChangeAddress_Click);
             // 
+            // btnChangeProperty
+            // 
+            this.btnChangeProperty.Location = new System.Drawing.Point(179, 271);
+            this.btnChangeProperty.Name = "btnChangeProperty";
+            this.btnChangeProperty.Size = new System.Drawing.Size(115, 52);
+            this.btnChangeProperty.TabIndex = 12;
+            this.btnChangeProperty.Text = "Change Property Owner";
+            this.btnChangeProperty.UseVisualStyleBackColor = true;
+            this.btnChangeProperty.Click += new System.EventHandler(this.btnChangeProperty_Click);
+            // 
             // PersonView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 361);
+            this.Controls.Add(this.btnChangeProperty);
             this.Controls.Add(this.btnChangeAddress);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnShowProperties);
@@ -192,5 +204,6 @@
         private System.Windows.Forms.Button btnShowProperties;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnChangeAddress;
+        private System.Windows.Forms.Button btnChangeProperty;
     }
 }

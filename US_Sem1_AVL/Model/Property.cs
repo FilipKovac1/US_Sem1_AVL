@@ -35,5 +35,7 @@ namespace Model
         }
 
         public override string ToString() => String.Format("{0}", this.ID);
+
+        public bool ChangeOwner(Person oldOwner, Person newOwner) => this.PropertyList.ChangeOwner(oldOwner, newOwner);
     }
 }

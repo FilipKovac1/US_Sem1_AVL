@@ -36,9 +36,6 @@ namespace US_Sem1_AVL.GUI
             this.propertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.propertyBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridProperties = new System.Windows.Forms.DataGridView();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.addressDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.descriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.propertyBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.propertyBindingSource)).BeginInit();
@@ -64,40 +61,13 @@ namespace US_Sem1_AVL.GUI
             this.dataGridProperties.AllowUserToAddRows = false;
             this.dataGridProperties.AllowUserToDeleteRows = false;
             this.dataGridProperties.AllowUserToOrderColumns = true;
-            this.dataGridProperties.AutoGenerateColumns = false;
             this.dataGridProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDDataGridViewTextBoxColumn,
-            this.addressDataGridViewTextBoxColumn,
-            this.descriptionDataGridViewTextBoxColumn});
-            this.dataGridProperties.DataSource = this.propertyBindingSource3;
             this.dataGridProperties.Location = new System.Drawing.Point(12, 12);
             this.dataGridProperties.Name = "dataGridProperties";
             this.dataGridProperties.ReadOnly = true;
             this.dataGridProperties.Size = new System.Drawing.Size(802, 455);
             this.dataGridProperties.TabIndex = 0;
             this.dataGridProperties.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridProperties_RowClick);
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // addressDataGridViewTextBoxColumn
-            // 
-            this.addressDataGridViewTextBoxColumn.DataPropertyName = "Address";
-            this.addressDataGridViewTextBoxColumn.HeaderText = "Address";
-            this.addressDataGridViewTextBoxColumn.Name = "addressDataGridViewTextBoxColumn";
-            this.addressDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
-            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
-            this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            this.descriptionDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // propertyBindingSource3
             // 
@@ -125,9 +95,6 @@ namespace US_Sem1_AVL.GUI
         private System.Windows.Forms.BindingSource propertyBindingSource1;
         private System.Windows.Forms.BindingSource propertyBindingSource2;
         private System.Windows.Forms.DataGridView dataGridProperties;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn addressDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource propertyBindingSource3;
     }
 }

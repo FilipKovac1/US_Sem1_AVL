@@ -83,5 +83,14 @@ namespace US_Sem1_AVL.GUI
                 this.Dispose();
             }
         }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            if (this.Property.PropertyList != null)
+            {
+                PropertyListView plv = new PropertyListView(this.Property.PropertyList);
+                plv.ShowDialog();
+            }
+        }
     }
 }

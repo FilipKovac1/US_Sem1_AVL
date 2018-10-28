@@ -152,6 +152,7 @@
             this.btnChangeAddress.TabIndex = 11;
             this.btnChangeAddress.Text = "Change Address";
             this.btnChangeAddress.UseVisualStyleBackColor = true;
+            this.btnChangeAddress.Click += new System.EventHandler(this.btnChangeAddress_Click);
             // 
             // PersonView
             // 

@@ -14,16 +14,12 @@ namespace US_Sem1_AVL.GUI
         public delegate void OnDispose(Person person);
         public OnDispose onDispose { get; set; }
 
-        public PersonView()
+        private MainForm form;
+        public PersonView(Person Person = null, MainForm form = null)
         {
             InitializeComponent();
-            this.Person = null;
-            this.PrintPerson();
-        }
-
-        public PersonView(Person Person = null) : this()
-        {
             this.Person = Person;
+            this.form = form;
             this.PrintPerson();
         }
 
@@ -47,6 +43,7 @@ namespace US_Sem1_AVL.GUI
                 inputAddress.Text = "";
                 btnShowProperties.Visible = false;
             }
+            btnChangeAddress.Visible = this.form != null;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
@@ -75,7 +72,12 @@ namespace US_Sem1_AVL.GUI
                 {
                     List<PropertyList> pl = null;
                     if (search != "")
-                        pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.Name == search).ToList();
+                    {
+                        if (Int32.TryParse(search, out int ss))
+                            pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.ID == ss).ToList();
+                        else
+                            pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.Name == search).ToList();
+                    }
                     else
                         pl = this.Person.PropertyLists.PreOrder().ToList();
                         
@@ -101,6 +103,40 @@ namespace US_Sem1_AVL.GUI
                 PropertyView pv = new PropertyView(this.Person.Property);
                 pv.onDispose += (prop) => this.inputAddress.Text = prop.Address;
                 pv.ShowDialog();
+            }
+        }
+
+        private void btnChangeAddress_Click(object sender, EventArgs e)
+        {
+            if (form != null) {
+                InputDialog caid = new InputDialog("Cadastral area id:");
+                caid.onDispose += (caID) =>
+                {
+                    if (Int32.TryParse(caID, out int caIDint))
+                    {
+                        CadastralArea ca = new CadastralArea(caIDint);
+                        ca = this.form.FindCadastralArea(new CadastralAreaByID(ca));
+                        if (ca != null)
+                        {
+                            InputDialog pid = new InputDialog("Property id:");
+                            pid.onDispose += (pID) =>
+                            {
+                                Property p = ca.FindProperty(pID);
+                                if (p != null) {
+                                    p.AddOccupant(this.Person);
+                                    this.inputAddress.Text = p.Address;
+                                }
+                                else
+                                    MessageBox.Show("Could not find this property");
+                            };
+                            pid.ShowDialog();
+                        } else
+                            MessageBox.Show("This cadastral area doesn't exist");
+                    }
+                    else
+                        MessageBox.Show("Input value has to be integer");
+                };
+                caid.ShowDialog();
             }
         }
     }

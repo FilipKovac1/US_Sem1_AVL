@@ -68,7 +68,8 @@
             this.comboTypes.Items.AddRange(new object[] {
             "Person",
             "Cadastral Area",
-            "Property List"});
+            "Property List",
+            "Property"});
             this.comboTypes.Location = new System.Drawing.Point(16, 491);
             this.comboTypes.Name = "comboTypes";
             this.comboTypes.Size = new System.Drawing.Size(121, 21);
@@ -98,8 +99,9 @@
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(101, 23);
             this.btnRemove.TabIndex = 6;
-            this.btnRemove.Text = "Remove";
+            this.btnRemove.Text = "Delete";
             this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // comboPType
             // 

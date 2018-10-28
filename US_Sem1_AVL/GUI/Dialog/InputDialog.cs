@@ -23,8 +23,9 @@ namespace US_Sem1_AVL.GUI.Dialog
         {
             if (textBox.Text != "" || this.emptyVal)
             {
+                string text = textBox.Text;
                 this.Dispose();
-                onDispose?.Invoke(textBox.Text);
+                onDispose?.Invoke(text);
             } else
             {
                 DialogResult result = MessageBox.Show("You did not fill input|\nDo you want to go back ?", "Warning", MessageBoxButtons.YesNo);

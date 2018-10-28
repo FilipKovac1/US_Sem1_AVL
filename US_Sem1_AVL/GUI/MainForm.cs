@@ -55,7 +55,7 @@ namespace US_Sem1_AVL
                     Person p = this.Program.Find(new Person(textSearch.Text));
                     if (p == null)
                         goto Error;
-                    PersonView pv = new PersonView(p);
+                    PersonView pv = new PersonView(p, this);
                     pv.onDispose += (person) => {
                         p = person;
                     };
@@ -74,15 +74,18 @@ namespace US_Sem1_AVL
                     cv.ShowDialog();
                     goto Finish;
                 case 2: // Property list 
-                    InputDialog id = new InputDialog("Catastral area id:");
+                    InputDialog id = new InputDialog("Catastral area:");
                     id.onDispose += (caId) =>
                     {
-                        if (caId != "" && Int32.TryParse(caId, out int s))
+                        if (caId != "")
                         {
-                            CadastralArea ca = new CadastralArea(s, "");
+                            CadastralArea ca = null;
+                            if (Int32.TryParse(caId, out int s))
+                                ca = this.Program.Find(new CadastralAreaByID(new CadastralArea(s, "")));
+                            else
+                                ca = this.Program.Find(new CadastralAreaByName(new CadastralArea(0, caId)));
                             if (ca != null)
                             {
-                                ca = this.Program.Find(new CadastralAreaByID(ca));
                                 PropertyList pl = ca.FindPropertyList(textSearch.Text);
                                 if (pl == null)
                                     MessageBox.Show("Property list with this id does not exist");
@@ -93,16 +96,43 @@ namespace US_Sem1_AVL
                                 }
                             }
                             else
-                                MessageBox.Show("Cadastral area with this id does not exist");
+                                MessageBox.Show("Cadastral area with this id/name does not exist");
                         }
                         else
-                            MessageBox.Show("You have to write number");
+                            MessageBox.Show("You have to write something");
                     };
                     id.ShowDialog();
                     goto Finish;
                 case 3: // Property
-                    // TODO number 1
-                    break;
+                    InputDialog id2 = new InputDialog("Catastral area:");
+                    id2.onDispose += (caId) =>
+                    {
+                        if (caId != "")
+                        {
+                            CadastralArea ca = null;
+                            if (Int32.TryParse(caId, out int s))
+                                ca = this.Program.Find(new CadastralAreaByID(new CadastralArea(s, "")));
+                            else
+                                ca = this.Program.Find(new CadastralAreaByName(new CadastralArea(0, caId)));
+                            if (ca != null)
+                            {
+                                Property prop = ca.FindProperty(textSearch.Text);
+                                if (prop == null)
+                                    MessageBox.Show("Property with this id does not exist");
+                                else
+                                {
+                                    PropertyView propv = new PropertyView(prop);
+                                    propv.ShowDialog();
+                                }
+                            }
+                            else
+                                MessageBox.Show("Cadastral area with this id/name does not exist");
+                        }
+                        else
+                            MessageBox.Show("You have to write something");
+                    };
+                    id2.ShowDialog();
+                    goto Finish;
             }
 
             Error:
@@ -115,7 +145,7 @@ namespace US_Sem1_AVL
             switch (comboTypes.SelectedIndex)
             {
                 case 0: // Persons
-                    PersonView pv = new PersonView(null);
+                    PersonView pv = new PersonView(null, this);
                     pv.onDispose += (person) =>
                     {
                         if (this.Program.AddPerson(person))
@@ -173,10 +203,24 @@ namespace US_Sem1_AVL
                     };
                     id.ShowDialog();
                     break;
+                default:
+                    MessageBox.Show("This option is not supported");
+                    break;
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            switch (comboTypes.SelectedIndex)
+            {
+                default:
+                    MessageBox.Show("This option is not supported yet!");
+                    break;
             }
         }
 
         public Person FindPerson(Person p) => this.Program.Find(p);
+        public CadastralArea FindCadastralArea(CadastralAreaByID ca) => this.Program.Find(ca);
 
         private void InitPersons()
         {
@@ -274,7 +318,7 @@ namespace US_Sem1_AVL
 
             if (e.RowIndex != -1)
             {
-                PersonView pv = new PersonView(this.Program.Find(new Person(dataGridPerson.Rows[e.RowIndex].Cells["ID"].Value.ToString())));
+                PersonView pv = new PersonView(this.Program.Find(new Person(dataGridPerson.Rows[e.RowIndex].Cells["ID"].Value.ToString())), this);
                 pv.onDispose += (p) => this.InitPersons();
                 pv.ShowDialog();
             }

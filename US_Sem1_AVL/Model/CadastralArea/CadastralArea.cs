@@ -32,12 +32,20 @@ namespace Model
             return String.Format("| {0} - {1} | ", this.ID, this.Name);
         }
 
-        internal PropertyList FindPropertyList(string text)
+        public PropertyList FindPropertyList(string text)
         {
             if (!Int32.TryParse(text, out int search))
                 return default(PropertyList);
 
             return this.PropertyLists.Find(new PropertyList(search));
+        }
+
+        public Property FindProperty (string text)
+        {
+            if (!Int32.TryParse(text, out int search))
+                return default(Property);
+
+            return this.Properties.Find(new Property(search));
         }
     }
 }

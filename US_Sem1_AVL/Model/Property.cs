@@ -33,5 +33,7 @@ namespace Model
 
             return Compare.IntC(this.ID, p.ID);
         }
+
+        public override string ToString() => String.Format("{0}", this.ID);
     }
 }

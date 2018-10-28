@@ -156,6 +156,8 @@ namespace US_Sem1_AVL.GUI
                 };
                 id.ShowDialog();
             }
+            else
+                MessageBox.Show("To do this action, you have to navigate from main window");
         }
 
         private void btnAddProperty_Click(object sender, EventArgs e)
@@ -163,10 +165,51 @@ namespace US_Sem1_AVL.GUI
             PropertyView pv = new PropertyView(new Property(-1, "", "", this.PropertyList));
             pv.onDispose += (p) =>
             {
-                if (p.ID >= 0)
-                    this.PropertyList.AddProperty(p);
+                if (p.ID >= 0 && this.PropertyList.AddProperty(p))
+                    MessageBox.Show("Property was added");
+                else
+                    MessageBox.Show("Property was not added");
             };
             pv.ShowDialog();
+        }
+
+        private void btnFindProperty_Click(object sender, EventArgs e)
+        {
+            InputDialog id = new InputDialog("Property ID:");
+            id.onDispose += (pID) =>
+            {
+                if (!Int32.TryParse(pID, out int pIDint)) {
+                    MessageBox.Show("Value has to be integer");
+                }  else {
+                    Property p = this.PropertyList.FindProperty(new Property(pIDint));
+                    if (p != null)
+                    {
+                        PropertyView pv = new PropertyView(p);
+                        pv.ShowDialog();
+                    }
+                    else
+                        MessageBox.Show("This property does not exists");
+                }
+            };
+            id.ShowDialog();
+        }
+
+        private void btnDeleteProperty_Click(object sender, EventArgs e)
+        {
+            InputDialog id = new InputDialog("Property ID:");
+            id.onDispose += (pID) =>
+            {
+                if (!Int32.TryParse(pID, out int pIDint))
+                    MessageBox.Show("Value has to be integer");
+                else
+                {
+                    if (this.PropertyList.DeleteProperty(pIDint))
+                        MessageBox.Show("Property was deleted");
+                    else
+                        MessageBox.Show("This property does not exists");
+                }
+            };
+            id.ShowDialog();
         }
     }
 }

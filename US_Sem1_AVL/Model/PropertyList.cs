@@ -62,7 +62,8 @@ namespace Model
         {
             if (p == null)
                 return false;
-            this.CadastralArea.Properties.Add(p);
+            if (!this.CadastralArea.Properties.Add(p))
+                return false;
             return this.Properties.Add(p);
         }
 
@@ -91,6 +92,20 @@ namespace Model
                     ow.Share += diff;
 
             End:;
-        } 
+        }
+
+        public Property FindProperty(Property property) => this.Properties.Find(property);
+
+        public bool DeleteProperty(int ID)
+        {
+            Property property = new Property(ID);
+            property = this.Properties.Find(property);
+            foreach (Person p in property.Occupants.PreOrder())
+                p.Property = null;
+
+            if (!this.CadastralArea.Properties.Remove(property))
+                return false;
+            return this.Properties.Remove(property);
+        }
     }
 }

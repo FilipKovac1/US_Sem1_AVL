@@ -60,14 +60,24 @@ namespace US_Sem1_AVL.GUI
             DataTable table = new DataTable();
             bool per = this.Person != null;
 
-            table.Columns.AddRange(new DataColumn[] {
-                new DataColumn("ID", typeof(int)),
-                new DataColumn("Address", typeof(string)),
-                new DataColumn("Description", typeof(string)),
-            });
-
+            DataColumn[] columns = null;
             if (per)
-                table.Columns.Add(new DataColumn("Share", typeof(string)));
+                columns = new DataColumn[]
+                {
+                    new DataColumn("ID", typeof(int)),
+                    new DataColumn("Address", typeof(string)),
+                    new DataColumn("Description", typeof(string)),
+                    new DataColumn("Share", typeof(string))
+                };
+            else
+                columns = new DataColumn[]
+                {
+                    new DataColumn("ID", typeof(int)),
+                    new DataColumn("Address", typeof(string)),
+                    new DataColumn("Description", typeof(string)),
+                };
+
+            table.Columns.AddRange(columns);
 
             // Add rows.
             if (this.Properties != null)

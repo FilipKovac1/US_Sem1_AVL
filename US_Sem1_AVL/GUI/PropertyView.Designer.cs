@@ -113,6 +113,8 @@
             // 
             // dataGridOccupants
             // 
+            this.dataGridOccupants.AllowUserToAddRows = false;
+            this.dataGridOccupants.AllowUserToDeleteRows = false;
             this.dataGridOccupants.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridOccupants.Location = new System.Drawing.Point(12, 153);
             this.dataGridOccupants.Name = "dataGridOccupants";
@@ -144,6 +146,7 @@
             this.label5.Size = new System.Drawing.Size(40, 13);
             this.label5.TabIndex = 21;
             this.label5.Text = "On List";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // PropertyView
             // 

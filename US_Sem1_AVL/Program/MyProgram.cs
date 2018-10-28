@@ -44,7 +44,7 @@ namespace US_Sem1_AVL
                                 pl.AddOwner(Persons.Find(), 1);
                                 for (int k = 0; k < propertyCount; k++)
                                 {
-                                    p = new Property(Int32.Parse(j + "" + k), "Address" + (j + k), "Unknown", pl);
+                                    p = new Property(c.Properties.Count, "Address" + (j + k), "Unknown", pl);
                                     p.AddOccupant(pl.Owners.GetRoot().Person);
                                     pl.AddProperty(p);
                                 }

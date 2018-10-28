@@ -41,6 +41,8 @@ namespace US_Sem1_AVL.GUI
             this.Owners = new System.Windows.Forms.DataGridView();
             this.btnAddOwner = new System.Windows.Forms.Button();
             this.btnAddProperty = new System.Windows.Forms.Button();
+            this.btnFindProperty = new System.Windows.Forms.Button();
+            this.btnDeleteProperty = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Owners)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +81,7 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(165, 246);
+            this.btnClose.Location = new System.Drawing.Point(168, 379);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 13;
@@ -89,9 +91,9 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnShowProperties
             // 
-            this.btnShowProperties.Location = new System.Drawing.Point(15, 217);
+            this.btnShowProperties.Location = new System.Drawing.Point(15, 277);
             this.btnShowProperties.Name = "btnShowProperties";
-            this.btnShowProperties.Size = new System.Drawing.Size(94, 23);
+            this.btnShowProperties.Size = new System.Drawing.Size(103, 23);
             this.btnShowProperties.TabIndex = 12;
             this.btnShowProperties.Text = "Show Properties";
             this.btnShowProperties.UseVisualStyleBackColor = true;
@@ -99,7 +101,7 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(246, 246);
+            this.btnOk.Location = new System.Drawing.Point(249, 379);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 11;
@@ -135,7 +137,7 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnAddProperty
             // 
-            this.btnAddProperty.Location = new System.Drawing.Point(115, 217);
+            this.btnAddProperty.Location = new System.Drawing.Point(15, 217);
             this.btnAddProperty.Name = "btnAddProperty";
             this.btnAddProperty.Size = new System.Drawing.Size(103, 23);
             this.btnAddProperty.TabIndex = 16;
@@ -143,11 +145,33 @@ namespace US_Sem1_AVL.GUI
             this.btnAddProperty.UseVisualStyleBackColor = true;
             this.btnAddProperty.Click += new System.EventHandler(this.btnAddProperty_Click);
             // 
+            // btnFindProperty
+            // 
+            this.btnFindProperty.Location = new System.Drawing.Point(15, 248);
+            this.btnFindProperty.Name = "btnFindProperty";
+            this.btnFindProperty.Size = new System.Drawing.Size(103, 23);
+            this.btnFindProperty.TabIndex = 17;
+            this.btnFindProperty.Text = "Find Property";
+            this.btnFindProperty.UseVisualStyleBackColor = true;
+            this.btnFindProperty.Click += new System.EventHandler(this.btnFindProperty_Click);
+            // 
+            // btnDeleteProperty
+            // 
+            this.btnDeleteProperty.Location = new System.Drawing.Point(15, 306);
+            this.btnDeleteProperty.Name = "btnDeleteProperty";
+            this.btnDeleteProperty.Size = new System.Drawing.Size(103, 23);
+            this.btnDeleteProperty.TabIndex = 18;
+            this.btnDeleteProperty.Text = "Delete Property";
+            this.btnDeleteProperty.UseVisualStyleBackColor = true;
+            this.btnDeleteProperty.Click += new System.EventHandler(this.btnDeleteProperty_Click);
+            // 
             // PropertyListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(336, 275);
+            this.ClientSize = new System.Drawing.Size(336, 414);
+            this.Controls.Add(this.btnDeleteProperty);
+            this.Controls.Add(this.btnFindProperty);
             this.Controls.Add(this.btnAddProperty);
             this.Controls.Add(this.btnAddOwner);
             this.Controls.Add(this.Owners);
@@ -183,5 +207,7 @@ namespace US_Sem1_AVL.GUI
         private System.Windows.Forms.DataGridView Owners;
         private System.Windows.Forms.Button btnAddOwner;
         private Button btnAddProperty;
+        private Button btnFindProperty;
+        private Button btnDeleteProperty;
     }
 }

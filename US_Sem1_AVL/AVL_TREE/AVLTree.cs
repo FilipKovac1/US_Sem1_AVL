@@ -146,11 +146,10 @@ namespace AVLTree
 
         public bool Remove (T Data)
         {
-            if (this.Root == null)
+            if (this.Root == null || Data == null)
                 return false;
 
             Node<T> act = this.Root;
-
             while (act.Data.CompareTo(Data) != 0)
             {
                 if (act.Data.CompareTo(Data) < 0)
@@ -168,35 +167,55 @@ namespace AVLTree
                         return false;
                 }
             }
-
+            
             if (act.Right == null || act.Left == null) // if i removing leaf or with one child
             {
                 Node<T> child = act.Right == null ? act.Left : act.Right;
-                if (act.Parent == null) // it was root
+                if (act.Parent == null)
+                { // it was root
+                    if (child != null)
+                        child.Parent = null;
                     this.Root = child;
+                } 
                 else
                 {
-                    this.SetParentChild(act, child, Data);
-                    this.SetParent(act, act.Parent);
+                    this.SetParentChild(act, child, Data); // parent of deleted node set new child
+                    this.SetParent(act, act.Parent); // child of the deleted node set new parent
+                    act = act.Parent;
                 }
-
-                if (child != null) 
-                    act = child;
             }
             else 
             {
-                Node<T> minChild = this.FindLeftLeaf(act.Right);
+                Node<T> minChild = this.FindLeftLeaf(act.Right, out int steps);
+                if (steps == 0)
+                {
+                    act.Data = minChild.Data;
+                    act.Right = minChild.Right;
+                    if (act.Right != null)
+                        act.Right.Parent = act;
+                }
+                else
+                {
+                    Node<T> minParent = minChild.Parent;
+                    act.Data = minChild.Data;
 
-                act.Data = minChild.Data;
-                this.SetParentChild(minChild, null, minChild.Data);
-                act = minChild.Parent;
+                    int oldBal = this.GetBalance(minParent);
+                    minParent.Left = minChild.Right;
+                    if (minChild.Right != null)
+                        minChild.Right.Parent = minParent;
+                    if (oldBal == 0)
+                        goto Finish;
+                    act = minParent;
+                }
             }
 
             int Balance = 0, BalanceL = 0, BalanceR = 0;
-
+            bool first = true;
             while (act != null)
             {
-                if (this.GetBalance(act) == 0)
+                if (first)
+                    first = false;
+                else if (this.GetBalance(act) == 0)
                     break;
                 this.UpdateHeight(act);
                 Balance = this.GetBalance(act);
@@ -204,11 +223,11 @@ namespace AVLTree
                 BalanceR = this.GetBalance(act.Right);
 
                 // LL rotation
-                if (Balance > 1 && BalanceR > 0)
+                if (Balance > 1 && BalanceR >= 0)
                     act = LeftRotation(act);
 
                 // RR rotation 
-                if (Balance < -1 && BalanceL < 0)
+                if (Balance < -1 && BalanceL <= 0)
                     act = RightRotation(act);
 
                 // LR rotation
@@ -227,15 +246,19 @@ namespace AVLTree
 
                 act = act.Parent;
             }
-
+            Finish:;
             this.Count--;
             return true;
         }
 
-        private Node<T> FindLeftLeaf(Node<T> Node)
+        private Node<T> FindLeftLeaf(Node<T> Node, out int steps)
         {
+            steps = 0;
             while (Node.Left != null)
+            {
+                steps++;
                 Node = Node.Left;
+            }
             return Node;
         }
         private void FindLeftLeaf(Node<T> Node, Stack s, int x = 1)
@@ -512,7 +535,7 @@ namespace AVLTree
             LinkedList<T> ret = new LinkedList<T>();
             if (this.Root == null)
                 return ret;
-            Stack s = new Stack(this.Count / 2); // cannot be more than half of the nodes in the stack
+            Stack s = new Stack(this.Count / 2 + 1); // cannot be more than half of the nodes in the stack
             Node<T> act = this.Root;
             s.Push(act);
             int count = 0;
@@ -537,7 +560,7 @@ namespace AVLTree
             LinkedList<Node<T>> ret = new LinkedList<Node<T>>();
             if (this.Root == null)
                 return ret;
-            Stack s = new Stack(this.Count / 2); // cannot be more than half of the nodes in the stack
+            Stack s = new Stack(this.Count / 2 + 1); // cannot be more than half of the nodes in the stack
             Node<T> act = this.Root;
             s.Push(act);
             int count = 0;
@@ -562,13 +585,14 @@ namespace AVLTree
             if (this.Root == null)
                 return default(T);
 
-            int height = RandomH.Next(this.Root.Height);
+            int steps = RandomH.Next(this.Count / 2 + 1);
             Node<T> act = this.Root;
-            for (int i = 0; i < height; i++)
+            while (steps > 0)
             {
+                steps--;
                 if (!act.HasChild())
                     return act.Data;
-                if (RandomS.NextDouble() < 0.5 && act.Left != null)
+                if (RandomS.NextDouble() < 0.5 || act.Right == null)
                     act = act.Left;
                 else
                     act = act.Right;
@@ -579,6 +603,8 @@ namespace AVLTree
 
         public bool TestAVL()
         {
+            if (this.Root == null)
+                return true;
             foreach (Node<T> node in this.PreOrderNode())
             {
                 this.UpdateHeight(node);

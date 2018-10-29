@@ -17,6 +17,10 @@ namespace US_Sem1_AVL
             this.Persons = new AVLTree<Person>();
             this.CadastralAreasByID = new AVLTree<CadastralAreaByID>();
             this.CadastralAreasByName = new AVLTree<CadastralAreaByName>();
+            if (this.TestStructure())
+                Console.WriteLine("Vypni to uz ... nemusi to tu byt :D :D ");
+            else
+                Console.WriteLine("False");
         }
 
         public MyProgram (bool Generate, int cadastralCount, int personsCount, int propertyListCount, int propertyCount) : this()
@@ -52,12 +56,7 @@ namespace US_Sem1_AVL
                         }
                     }
                 }
-
-                if (!this.Persons.TestAVL())
-                    Console.WriteLine("Strom nie je AVL");
-                else
-                    Console.WriteLine("Strom je vyvazeny");
-            } 
+            }
         }
 
         public void UpdateCadastralArea(CadastralArea c, string oldName)
@@ -93,6 +92,18 @@ namespace US_Sem1_AVL
                 o.Person.AddPropertyList(PropertyList);        
             return PropertyList.CadastralArea.AddPropertyList(PropertyList);
         }
-        
+
+        public bool TestStructure ()
+        {
+            AVLTree<Person> test = new AVLTree<Person>();
+            Random testR = new Random(100);
+            int MaxValue = 100000;
+            int ToDelete = 100;
+            for (int i = 1; i <= MaxValue; i++)
+                test.Add(new Person(testR.Next(MaxValue).ToString()));
+            for (int i = 0; i < ToDelete; i++)
+                test.Remove(test.Find()); // deletes random nodes from tree
+            return test.TestAVL();
+        }        
     }
 }

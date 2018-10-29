@@ -12,10 +12,7 @@ namespace US_Sem1_AVL.GUI
             InitializeComponent();
         }
 
-        private void btnNot_Click(object sender, EventArgs e)
-        {
-            this.RunMain();
-        }
+        private void btnNot_Click(object sender, EventArgs e) => this.RunMain(); 
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {

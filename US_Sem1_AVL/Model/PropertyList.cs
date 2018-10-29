@@ -129,5 +129,7 @@ namespace Model
             
             return changed > this.Owners.Count;
         }
+
+        public override string ToString() => this.ID + "";
     }
 }

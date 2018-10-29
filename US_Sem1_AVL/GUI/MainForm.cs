@@ -62,7 +62,17 @@ namespace US_Sem1_AVL
                     pv.ShowDialog();
                     goto Finish;
                 case 1: // Cadastral Area
-                    CadastralArea c = Int32.TryParse(textSearch.Text, out int search) ? this.Program.Find(new CadastralAreaByID(new CadastralArea(search))) : this.Program.Find(new CadastralAreaByName(new CadastralArea(0, textSearch.Text)));
+                    CadastralArea c = null;
+                    if (Int32.TryParse(textSearch.Text, out int search))
+                    {
+                        c = new CadastralArea(search);
+                        c = this.Program.Find(new CadastralAreaByID(new CadastralArea(search)));
+                    }
+                    else
+                    {
+                        c = new CadastralArea(0, textSearch.Text);
+                        c = this.Program.Find(new CadastralAreaByName(c));
+                    }
                     if (c == null)
                         goto Error;
                     CadastralView cv = new CadastralView(c);
@@ -213,6 +223,23 @@ namespace US_Sem1_AVL
         {
             switch (comboTypes.SelectedIndex)
             {
+                case 1: // cadastral area
+                    CadastralArea c = null;
+                    if (Int32.TryParse(textSearch.Text, out int search))
+                    {
+                        c = new CadastralArea(search);
+                        c = this.Program.Find(new CadastralAreaByID(new CadastralArea(search)));
+                    }
+                    else
+                    {
+                        c = new CadastralArea(0, textSearch.Text);
+                        c = this.Program.Find(new CadastralAreaByName(c));
+                    }
+                    if (c == null)
+                    {
+                        MessageBox.Show("This cadastral area does not exists");
+                    }
+                    break;
                 default:
                     MessageBox.Show("This option is not supported yet!");
                     break;
@@ -331,6 +358,31 @@ namespace US_Sem1_AVL
                 CadastralView cv = new CadastralView(this.Program.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(dataGridCA.Rows[e.RowIndex].Cells["ID"].Value.ToString())))));
                 cv.onDispose += (ca, c) => this.InitCadastralAreas();
                 cv.ShowDialog();
+            }
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            switch (comboTypes.SelectedIndex)
+            {
+                case 0: // Persons
+                    if (this.Program.Persons.TestAVL())
+                        MessageBox.Show("Persons are in AVLTree!");
+                    else
+                        MessageBox.Show("Persons are not in AVLtree!");
+                    break;
+                case 1: // Cadastral Area
+                    if (this.Program.CadastralAreasByID.TestAVL())
+                        MessageBox.Show("Cadastral area is AVLTree!");
+                    else
+                        MessageBox.Show("Cadastral area is not AVLtree!");
+                    break;
+                default:
+                    if (this.Program.TestStructure())
+                        MessageBox.Show("AVLTree test run successfully!");
+                    else
+                        MessageBox.Show("Structure test failed!");
+                    break;
             }
         }
     }

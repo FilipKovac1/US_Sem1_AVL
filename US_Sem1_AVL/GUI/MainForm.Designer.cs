@@ -39,6 +39,7 @@
             this.labelCACount = new System.Windows.Forms.Label();
             this.dataGridCA = new System.Windows.Forms.DataGridView();
             this.comboCAType = new System.Windows.Forms.ComboBox();
+            this.btnTest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCA)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +55,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(574, 489);
+            this.btnAdd.Location = new System.Drawing.Point(404, 489);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(93, 23);
             this.btnAdd.TabIndex = 1;
@@ -85,7 +86,7 @@
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(471, 489);
+            this.btnFind.Location = new System.Drawing.Point(301, 489);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(97, 23);
             this.btnFind.TabIndex = 4;
@@ -95,7 +96,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(673, 489);
+            this.btnRemove.Location = new System.Drawing.Point(503, 489);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(101, 23);
             this.btnRemove.TabIndex = 6;
@@ -160,11 +161,21 @@
             this.comboCAType.TabIndex = 12;
             this.comboCAType.SelectedIndexChanged += new System.EventHandler(this.comboCAType_SelectedIndexChanged);
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(675, 489);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(100, 23);
+            this.btnTest.TabIndex = 0;
+            this.btnTest.Text = "Test Structure";
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 524);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.comboCAType);
             this.Controls.Add(this.dataGridCA);
             this.Controls.Add(this.labelCACount);
@@ -198,6 +209,7 @@
         private System.Windows.Forms.Label labelCACount;
         private System.Windows.Forms.DataGridView dataGridCA;
         private System.Windows.Forms.ComboBox comboCAType;
+        private System.Windows.Forms.Button btnTest;
     }
 }
 

@@ -77,8 +77,7 @@ namespace US_Sem1_AVL.GUI
 
             // Add rows.
             if (this.PropertyList.Owners.Count > 0)
-                foreach (Owner o in this.PropertyList.Owners.PreOrder())
-                    table.Rows.Add(this.CreateOwnerRow(o, table));
+                this.PropertyList.Owners.PreOrder((o) => table.Rows.Add(this.CreateOwnerRow(o, table)));
 
             BindSourceOwners.DataSource = table;
         }

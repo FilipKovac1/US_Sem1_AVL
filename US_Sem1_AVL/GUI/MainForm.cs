@@ -22,6 +22,8 @@ namespace US_Sem1_AVL
         private BindingSource BindSourcePersons = new BindingSource();
         private BindingSource BindSourceCadastralAreas = new BindingSource();
         private DataRow row;
+        private DataTable tableCA;
+        private DataTable tablePerson;
 
         public MainForm()
         {
@@ -224,7 +226,7 @@ namespace US_Sem1_AVL
             switch (comboTypes.SelectedIndex)
             {
                 case 1: // cadastral area
-                    CadastralArea c = null;
+                    CadastralArea c = null, c2 = null;
                     if (Int32.TryParse(textSearch.Text, out int search))
                     {
                         c = new CadastralArea(search);
@@ -236,8 +238,29 @@ namespace US_Sem1_AVL
                         c = this.Program.Find(new CadastralAreaByName(c));
                     }
                     if (c == null)
-                    {
                         MessageBox.Show("This cadastral area does not exists");
+                    else
+                    {
+                        InputDialog id = new InputDialog("Cadastral area to add this one (ID):");
+                        id.onDispose += (idCa) =>
+                        {
+                            if (Int32.TryParse(idCa, out int idCAint) && c.ID != idCAint)
+                            {
+                                c2 = new CadastralArea(idCAint);
+                                c2 = this.Program.Find(new CadastralAreaByID(c2));
+                                if (c2 != null)
+                                {
+                                    this.Program.Merge(c, c2);
+                                    this.InitCadastralAreas();
+                                    MessageBox.Show(String.Format("Cadastal area {0} was remove and its property lists was moved under {1} ", c.Name, c2.Name));
+                                }
+                                else
+                                    MessageBox.Show("Cadastral area does not exist");
+                            }
+                            else
+                                MessageBox.Show("New cadastral are cannot be the same as removing one");
+                        };
+                        id.ShowDialog();
                     }
                     break;
                 default:
@@ -252,9 +275,9 @@ namespace US_Sem1_AVL
         private void InitPersons()
         {
             labelPersons.Text = String.Format("Persons ({0}):", Program.Persons.Count);
-            DataTable table = new DataTable();
+            this.tablePerson = new DataTable();
 
-            table.Columns.AddRange(new DataColumn[] {
+            tablePerson.Columns.AddRange(new DataColumn[] {
                 new DataColumn("ID", typeof(string)),
                 new DataColumn("Name", typeof(string)),
                 new DataColumn("Birthday", typeof(string)),
@@ -267,27 +290,24 @@ namespace US_Sem1_AVL
             switch (comboPType.SelectedItem)
             {
                 case "PreOrder":
-                    ps = this.Program.Persons.PreOrder();
+                    ps = this.Program.Persons.PreOrder(Order);
                     break;
                 case "PostOrder":
-                    ps = this.Program.Persons.PostOrder();
+                    ps = this.Program.Persons.PostOrder(Order);
                     break;
                 case "InOrder":
-                    ps = this.Program.Persons.InOrder();
+                    ps = this.Program.Persons.InOrder(Order);
                     break;
             }
-            if (ps.Count > 0)
-                foreach (Person p in ps)
-                    table.Rows.Add(this.CreatePersonRow(p, table));
 
-            BindSourcePersons.DataSource = table;
+            BindSourcePersons.DataSource = tablePerson;
         }
         private void InitCadastralAreas()
         {
             labelCACount.Text = String.Format("Cadastral Areas ({0}):", Program.CadastralAreasByID.Count);
-            DataTable table = new DataTable();
+            this.tableCA = new DataTable();
 
-            table.Columns.AddRange(new DataColumn[] {
+            tableCA.Columns.AddRange(new DataColumn[] {
                 new DataColumn("ID", typeof(int)),
                 new DataColumn("Name", typeof(string)),
                 new DataColumn("Property List count", typeof(int)),
@@ -299,25 +319,25 @@ namespace US_Sem1_AVL
             switch (comboCAType.SelectedItem)
             {
                 case "PreOrder":
-                    cans = this.Program.CadastralAreasByName.PreOrder();
+                    cans = this.Program.CadastralAreasByName.PreOrder(Order);
                     break;
                 case "PostOrder":
-                    cans = this.Program.CadastralAreasByName.PostOrder();
+                    cans = this.Program.CadastralAreasByName.PostOrder(Order);
                     break;
                 case "InOrder":
-                    cans = this.Program.CadastralAreasByName.InOrder();
+                    cans = this.Program.CadastralAreasByName.InOrder(Order);
                     break;
             }
-            if (cans.Count > 0)
-                foreach (CadastralAreaByName cao in cans)
-                    table.Rows.Add(this.CreateCARow(cao.CadastralArea, table));
 
-            BindSourceCadastralAreas.DataSource = table;
+            BindSourceCadastralAreas.DataSource = tableCA;
         }
 
-        private DataRow CreatePersonRow (Person p, DataTable t)
+        private void Order(CadastralAreaByName cao) => tableCA.Rows.Add(this.CreateCARow(cao.CadastralArea));
+        private void Order(Person p) => tablePerson.Rows.Add(this.CreatePersonRow(p));
+
+        private DataRow CreatePersonRow (Person p)
         {
-            this.row = t.NewRow();
+            this.row = tablePerson.NewRow();
             row["ID"] = p.ID;
             row["Name"] = p.Name;
             row["Birthday"] = p.DateOfBirth.ToString("dd-MM-yyyy");
@@ -326,9 +346,9 @@ namespace US_Sem1_AVL
             return this.row;
         }
 
-        private DataRow CreateCARow (CadastralArea ca, DataTable t)
+        private DataRow CreateCARow (CadastralArea ca)
         {
-            this.row = t.NewRow();
+            this.row = tableCA.NewRow();
             row["ID"] = ca.ID;
             row["Name"] = ca.Name;
             row["Property List count"] = ca.PropertyLists.Count;

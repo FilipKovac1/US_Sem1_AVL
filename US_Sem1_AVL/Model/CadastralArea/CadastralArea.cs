@@ -19,11 +19,15 @@ namespace Model
             this.PropertyLists = new AVLTree<PropertyList>();
         }
 
-        public bool AddPropertyList(PropertyList p)
+        public bool AddPropertyList(PropertyList p, bool newID = false)
         {
             bool ret = this.PropertyLists.Add(p);
-            foreach(Property prop in p.Properties.PreOrder()) 
-                this.Properties.Add(prop);
+            p.Properties.PreOrder((property) =>
+            {
+                if (newID)
+                    property.ID = this.Properties.Count;
+                this.Properties.Add(property);
+            });
             return ret;
         }
 
@@ -46,6 +50,15 @@ namespace Model
                 return default(Property);
 
             return this.Properties.Find(new Property(search));
+        }
+
+        public void Merge(CadastralArea c)
+        {
+            c.PropertyLists.PreOrder((propertyList) =>
+            {
+                propertyList.ID = this.PropertyLists.Count;
+                this.AddPropertyList(propertyList, true);
+            });
         }
     }
 }

@@ -17,10 +17,10 @@ namespace US_Sem1_AVL
             this.Persons = new AVLTree<Person>();
             this.CadastralAreasByID = new AVLTree<CadastralAreaByID>();
             this.CadastralAreasByName = new AVLTree<CadastralAreaByName>();
-            if (this.TestStructure())
-                Console.WriteLine("Vypni to uz ... nemusi to tu byt :D :D ");
-            else
-                Console.WriteLine("False");
+            //if (this.TestStructure())
+            //    Console.WriteLine("Vypni to uz ... nemusi to tu byt :D :D ");
+            //else
+            //    Console.WriteLine("False");
         }
 
         public MyProgram (bool Generate, int cadastralCount, int personsCount, int propertyListCount, int propertyCount) : this()
@@ -88,8 +88,7 @@ namespace US_Sem1_AVL
         }
         public bool AddPropertyList(PropertyList PropertyList)
         {
-            foreach (Owner o in PropertyList.Owners.PreOrder())
-                o.Person.AddPropertyList(PropertyList);        
+            PropertyList.Owners.PreOrder((o) => o.Person.AddPropertyList(PropertyList));       
             return PropertyList.CadastralArea.AddPropertyList(PropertyList);
         }
 
@@ -104,6 +103,13 @@ namespace US_Sem1_AVL
             for (int i = 0; i < ToDelete; i++)
                 test.Remove(test.Find()); // deletes random nodes from tree
             return test.TestAVL();
-        }        
+        }
+
+        public void Merge(CadastralArea c, CadastralArea c2)
+        {
+            c2.Merge(c);
+            this.CadastralAreasByID.Remove(new CadastralAreaByID(c)); // log n remove
+            this.CadastralAreasByName.Remove(new CadastralAreaByName(c)); // log n remove
+        }
     }
 }

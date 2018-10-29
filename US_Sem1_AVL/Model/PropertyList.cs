@@ -34,8 +34,7 @@ namespace Model
         private bool CheckShares ()
         {
             double sum = Owners.Count == 0 ? 1 : 0;
-            foreach (Owner o in Owners.PreOrder())
-                sum += o.Share;
+            Owners.PreOrder((o) => sum += o.Share);
             if (sum != 1)
                 return false;
             return true;
@@ -60,8 +59,7 @@ namespace Model
             else
             {
                 double minusShare = share / (double)Owners.Count;
-                foreach (Owner o in Owners.PreOrder())
-                    o.Share -= minusShare;
+                Owners.PreOrder((o) => o.Share -= minusShare);
             }
             this.Owners.Add(new Owner(p, share));
             p.AddPropertyList(this);
@@ -101,10 +99,11 @@ namespace Model
                 o.Share = newValue;
             }
 
-            foreach (Owner ow in this.Owners.PreOrder())
+            this.Owners.PreOrder((ow) =>
+            {
                 if (o.Person.ID != ow.Person.ID)
                     ow.Share += diff;
-
+            });
             End:;
         }
 
@@ -114,8 +113,7 @@ namespace Model
         {
             Property property = new Property(ID);
             property = this.Properties.Find(property);
-            foreach (Person p in property.Occupants.PreOrder())
-                p.Property = null;
+            property.Occupants.PreOrder((p) => p.Property = null);
 
             if (!this.CadastralArea.Properties.Remove(property))
                 return false;

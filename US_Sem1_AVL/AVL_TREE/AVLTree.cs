@@ -13,6 +13,9 @@ namespace AVLTree
         private Random RandomH = new Random();
         private Random RandomS = new Random();
 
+        public delegate void Iterate(T Data);
+        private delegate void IterateThis(Node<T> Node);
+
         public AVLTree ()
         {
             this.Root = null;
@@ -484,7 +487,7 @@ namespace AVLTree
             return ret;
         }
         private string PrintNode (Node<T> Node) => (Node.Parent != null ? Node.Parent.ToString() + ":" : "") + Node.ToString() + " | ";
-        public LinkedList<T> PostOrder()
+        public LinkedList<T> PostOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
             if (this.Root == null)
@@ -504,12 +507,13 @@ namespace AVLTree
                 else
                 {
                     ret.AddLast(act.Data);
+                    iterate?.Invoke(act.Data);
                     act = null;
                 }
             }
             return ret;
         }
-        public LinkedList<T> InOrder()
+        public LinkedList<T> InOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
             if (this.Root == null)
@@ -523,6 +527,7 @@ namespace AVLTree
                 act = (Node<T>)s.Pop(); // get last added to print
 
                 ret.AddLast(act.Data);
+                iterate?.Invoke(act.Data);
                 count++;
 
                 act = act.Right; // don't forget about right side
@@ -530,7 +535,7 @@ namespace AVLTree
 
             return ret;
         }
-        public LinkedList<T> PreOrder()
+        public LinkedList<T> PreOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
             if (this.Root == null)
@@ -544,6 +549,8 @@ namespace AVLTree
                 act = (Node<T>)s.Pop(); // get last added to print
 
                 ret.AddLast(act.Data);
+                iterate?.Invoke(act.Data);
+
                 count++;
 
                 if (act.Right != null)
@@ -555,7 +562,7 @@ namespace AVLTree
             return ret;
 
         }
-        private LinkedList<Node<T>> PreOrderNode()
+        private LinkedList<Node<T>> PreOrderNode(IterateThis iterate = null)
         {
             LinkedList<Node<T>> ret = new LinkedList<Node<T>>();
             if (this.Root == null)
@@ -569,6 +576,8 @@ namespace AVLTree
                 act = (Node<T>)s.Pop(); // get last added to print
 
                 ret.AddLast(act);
+                iterate?.Invoke(act);
+
                 count++;
 
                 if (act.Right != null)
@@ -605,14 +614,15 @@ namespace AVLTree
         {
             if (this.Root == null)
                 return true;
-            foreach (Node<T> node in this.PreOrderNode())
-            {
+
+            bool ret = true;
+            this.PreOrderNode((node) => {
                 this.UpdateHeight(node);
                 if (!this.CheckAVL(node))
-                    return false;
-            }
+                    ret = false;
+            });
 
-            return true;
+            return ret;
         }
 
         private bool CheckAVL(Node<T> Node) => Math.Abs(this.Height(Node.Left) - this.Height(Node.Right)) <= 1;

@@ -56,13 +56,13 @@ namespace US_Sem1_AVL.GUI
             });
 
             DataRow row = null;
-            foreach (Person p in this.Property.Occupants.PreOrder())
+            this.Property.Occupants.PreOrder((p) =>
             {
                 row = dt.NewRow();
                 row["ID"] = p.ID;
                 row["Name"] = p.Name;
                 dt.Rows.Add(row);
-            }
+            });
 
             BindingSourceOccupants.DataSource = dt;
         }

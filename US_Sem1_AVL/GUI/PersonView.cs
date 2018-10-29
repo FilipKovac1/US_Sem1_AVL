@@ -70,20 +70,28 @@ namespace US_Sem1_AVL.GUI
                 InputDialog id = new InputDialog("Catastral area name:", "", true);
                 id.onDispose += (search) =>
                 {
-                    List<PropertyList> pl = null;
+                    LinkedList<PropertyList> pl = new LinkedList<PropertyList>();
                     if (search != "")
                     {
                         if (Int32.TryParse(search, out int ss))
-                            pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.ID == ss).ToList();
+                            this.Person.PropertyLists.PreOrder((p) =>
+                            {
+                                if (p.CadastralArea.ID == ss)
+                                    pl.AddLast(p);
+                            });
                         else
-                            pl = this.Person.PropertyLists.PreOrder().Where(c => c.CadastralArea.Name == search).ToList();
+                            pl = this.Person.PropertyLists.PreOrder((p) =>
+                            {
+                                if (p.CadastralArea.Name == search)
+                                    pl.AddLast(p);
+                            });
                     }
                     else
-                        pl = this.Person.PropertyLists.PreOrder().ToList();
+                        pl = this.Person.PropertyLists.PreOrder();
                         
                     if (pl.Count > 0)
                     {
-                        PropertiesView plv = new PropertiesView(pl, this.Person, 0);
+                        PropertiesView plv = new PropertiesView(pl, this.Person);
                         plv.ShowDialog();
                     }
                     else

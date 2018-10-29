@@ -28,15 +28,7 @@ namespace US_Sem1_AVL.GUI
             dataGridProperties.DataSource = bindingSource1;
             this.Person = null;
         }
-
-        public PropertiesView(List<PropertyList> Properties, Person Person, int x) : this()
-        {
-            this.Properties = null;
-            this.PropertiesList = Properties;
-            this.Person = Person;
-            ReloadData();
-        }
-
+        
         public PropertiesView(LinkedList<Property> Properties, Person Person) : this()
         {
             this.Properties = Properties;
@@ -49,8 +41,9 @@ namespace US_Sem1_AVL.GUI
         {
             this.PropertiesList = null;
             foreach (PropertyList pl in PropertyLists)
-                foreach (Property p in pl.Properties.InOrder())
+                pl.Properties.InOrder((p) => {
                     this.Properties.AddLast(p);
+                });
             this.Person = Person;
             ReloadData();
         }
@@ -85,9 +78,8 @@ namespace US_Sem1_AVL.GUI
                     table.Rows.Add(this.CreateRow(p, per, table));
             else if (this.PropertiesList != null)
                 foreach (PropertyList pl in this.PropertiesList)
-                    foreach (Property p in pl.Properties.PreOrder())
-                        table.Rows.Add(this.CreateRow(p, per, table));
-
+                    pl.Properties.PreOrder((p) => table.Rows.Add(this.CreateRow(p, per, table)));
+                        
             bindingSource1.DataSource = table;
         }
 

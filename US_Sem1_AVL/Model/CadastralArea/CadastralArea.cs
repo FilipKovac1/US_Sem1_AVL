@@ -60,5 +60,9 @@ namespace Model
                 this.AddPropertyList(propertyList, true);
             });
         }
+
+        public static string GetCsvHeaders() => "ID;Name";
+
+        public string ToCSV() => String.Format("{0};{1}", this.ID, this.Name);
     }
 }

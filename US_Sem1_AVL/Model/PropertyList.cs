@@ -23,8 +23,7 @@ namespace Model
             this.Properties = Properties;
             this.Owners = Owners;
         }
-
-
+        
         public int CompareTo(INode<PropertyList> Node)
         {
             PropertyList p = (PropertyList)Node;
@@ -50,7 +49,7 @@ namespace Model
             return true;
         }
 
-        public bool AddOwner (Person p, double share = 1)
+        public bool AddOwner (Person p, double share = 1, bool check = true)
         {
             if (p == null || this.Owners.Find(new Owner(p)) != null) // if owner is already added
                 return false;
@@ -58,8 +57,11 @@ namespace Model
                 share = 1;
             else
             {
-                double minusShare = share / (double)Owners.Count;
-                Owners.PreOrder((o) => o.Share -= minusShare);
+                if (check)
+                {
+                    double minusShare = share / (double)Owners.Count;
+                    Owners.PreOrder((o) => o.Share -= minusShare);
+                }
             }
             this.Owners.Add(new Owner(p, share));
             p.AddPropertyList(this);
@@ -154,5 +156,9 @@ namespace Model
                 o.Person.RemovePropertyList(toDelete); // remove old from person
             });
         }
+
+        public static string GetCsvHeaders() => "ID;CadastralArea";
+
+        public string ToCSV() => String.Format("{0};{1}", this.ID, this.CadastralArea.ID);
     }
 }

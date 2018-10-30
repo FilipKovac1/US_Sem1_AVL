@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using AVLTree;
 using Model;
@@ -116,6 +117,110 @@ namespace US_Sem1_AVL
         {
             toMerge.Merge(toDelete);
             toDelete.Delete();
+        }
+
+        public void ToCSV(string path)
+        {
+            using (StreamWriter writer = new StreamWriter(path + "\\persons.csv"))
+            {
+                writer.AutoFlush = true;
+                writer.WriteLine(Person.GetCsvHeaders());
+                this.Persons.PreOrder((p) => writer.WriteLine(p.ToCSV()));
+            }
+
+            using (StreamWriter writer = new StreamWriter(path + "\\cadastralAreas.csv"))
+            {
+                writer.AutoFlush = true;
+                writer.WriteLine(CadastralArea.GetCsvHeaders());
+                StreamWriter writerOwners = new StreamWriter(path + "\\owners.csv");
+                writerOwners.AutoFlush = true;
+                writerOwners.WriteLine(Owner.GetCsvHeaders());
+                StreamWriter writerProperties = new StreamWriter(path + "\\properties.csv");
+                writerProperties.AutoFlush = true;
+                writerProperties.WriteLine(Property.GetCsvHeaders());
+                StreamWriter writerOccupants = new StreamWriter(path + "\\occupants.csv");
+                writerOccupants.AutoFlush = true;
+                writerOccupants.WriteLine(Property.OccupantsCsvHeader());
+                this.CadastralAreasByID.PreOrder((p) => {
+                    writer.WriteLine(p.CadastralArea.ToCSV());
+                    p.CadastralArea.PropertyLists.PreOrder((pl) =>
+                    {
+                        pl.Owners.PreOrder((o) => writerOwners.WriteLine(o.ToCSV(pl)));
+                        pl.Properties.PreOrder((prop) =>
+                        {
+                            writerProperties.WriteLine(prop.ToCSV());
+                            prop.Occupants.PreOrder((occ) => writerOccupants.WriteLine(prop.OccupantToCsv(occ)));
+                        });
+                    });
+                });
+            }
+        }
+
+        public void FromCSV (string path)
+        {
+            string[] line;
+            using (StreamReader reader = new StreamReader(@path + "\\persons.csv"))
+            {
+                string Headers = reader.ReadLine();
+                string[] bd;
+                while (!reader.EndOfStream)
+                {
+                    line = reader.ReadLine().Split(';');
+                    bd = line[2].Split('-');
+                    this.AddPerson(new Person(line[0], line[1], new DateTime(Int32.Parse(bd[0]), Int32.Parse(bd[1]), Int32.Parse(bd[2]))));
+                }
+            }
+
+            using (StreamReader reader = new StreamReader(@path + "\\cadastralAreas.csv"))
+            {
+                string Headers = reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    line = reader.ReadLine().Split(';');
+                    this.AddCadastralArea(new CadastralArea(Int32.Parse(line[0]), line[1]));
+                }
+            }
+
+            using (StreamReader reader = new StreamReader(@path + "\\owners.csv"))
+            {
+                string Headers = reader.ReadLine();
+                CadastralArea ca;
+                PropertyList pl;
+                while (!reader.EndOfStream)
+                {
+                    line = reader.ReadLine().Split(';');
+                    ca = this.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(line[1]))));
+                    pl = ca.FindPropertyList(line[2]); // check if exists
+                    if (pl == null) // add if not
+                    {
+                        pl = new PropertyList(Int32.Parse(line[2]), ca);
+                        ca.AddPropertyList(pl); 
+                    }
+                    pl.AddOwner(this.Find(new Person(line[0])), Double.Parse(line[3]), false);
+                }
+            }
+
+            using (StreamReader reader = new StreamReader(@path + "\\properties.csv"))
+            {
+                string Headers = reader.ReadLine();
+                PropertyList pl;
+                while (!reader.EndOfStream)
+                {
+                    line = reader.ReadLine().Split(';');
+                    pl = this.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(line[3])))).FindPropertyList(line[4]);
+                    pl.AddProperty(new Property(Int32.Parse(line[0]), line[1], line[2], pl));
+                }
+            }
+
+            using (StreamReader reader = new StreamReader(@path + "\\occupants.csv"))
+            {
+                string Headers = reader.ReadLine();
+                while (!reader.EndOfStream)
+                {
+                    line = reader.ReadLine().Split(';');
+                    this.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(line[2])))).FindProperty(line[1]).AddOccupant(this.Find(new Person(line[0])));
+                }
+            }
         }
     }
 }

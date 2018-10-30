@@ -56,5 +56,9 @@ namespace Model
         public bool AddPropertyList(PropertyList propertyList) => this.PropertyLists.Add(propertyList);
 
         public bool RemovePropertyList(PropertyList propertyList) => this.PropertyLists.Remove(propertyList);
+
+        public static string GetCsvHeaders() => "ID;Name;Birthday";
+
+        public string ToCSV() => String.Format("{0};{1};{2}", this.ID, this.Name, this.DateOfBirth.ToString("yyyy-MM-dd"));
     }
 }

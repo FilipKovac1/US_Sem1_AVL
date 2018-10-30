@@ -37,5 +37,11 @@ namespace Model
         public override string ToString() => String.Format("{0}", this.ID);
 
         public bool ChangeOwner(Person oldOwner, Person newOwner) => this.PropertyList.ChangeOwner(oldOwner, newOwner);
+
+        public static string GetCsvHeaders() => "ID;Address;Description;CadastralAreaID;PropertyListID";
+        public static string OccupantsCsvHeader() => "PersonID;PropertyID;CadastralAreaID";
+
+        public string ToCSV() => String.Format("{0};{1};{2};{3};{4}", this.ID, this.Address, this.Description, this.PropertyList.CadastralArea.ID, this.PropertyList.ID);
+        public string OccupantToCsv(Person p) => String.Format("{0};{1};{2}", p.ID, this.ID, this.PropertyList.CadastralArea.ID);
     }
 }

@@ -453,5 +453,29 @@ namespace US_Sem1_AVL
                     break;
             }
         }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
+            InputDialog id = new InputDialog("Path to save files:", Application.StartupPath);
+            id.onDispose += (path) =>
+            {
+                this.Program.ToCSV(path);
+                MessageBox.Show("All data have been saved");
+            };
+            id.ShowDialog();
+        }
+
+        private void readFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputDialog id = new InputDialog("Path to load files:", Application.StartupPath);
+            id.onDispose += (path) =>
+            {
+                this.Program.FromCSV(path);
+                MessageBox.Show("All data have been loaded");
+                this.InitPersons();
+                this.InitCadastralAreas();
+            };
+            id.ShowDialog();
+        }
     }
 }

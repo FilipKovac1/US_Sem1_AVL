@@ -40,14 +40,19 @@
             this.dataGridCA = new System.Windows.Forms.DataGridView();
             this.comboCAType = new System.Windows.Forms.ComboBox();
             this.btnTest = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPerson)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCA)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelPersons
             // 
             this.labelPersons.AutoSize = true;
-            this.labelPersons.Location = new System.Drawing.Point(13, 13);
+            this.labelPersons.Location = new System.Drawing.Point(10, 41);
             this.labelPersons.Name = "labelPersons";
             this.labelPersons.Size = new System.Drawing.Size(85, 13);
             this.labelPersons.TabIndex = 0;
@@ -55,7 +60,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(404, 489);
+            this.btnAdd.Location = new System.Drawing.Point(401, 517);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(93, 23);
             this.btnAdd.TabIndex = 1;
@@ -71,14 +76,14 @@
             "Cadastral Area",
             "Property List",
             "Property"});
-            this.comboTypes.Location = new System.Drawing.Point(16, 491);
+            this.comboTypes.Location = new System.Drawing.Point(13, 519);
             this.comboTypes.Name = "comboTypes";
             this.comboTypes.Size = new System.Drawing.Size(121, 21);
             this.comboTypes.TabIndex = 2;
             // 
             // textSearch
             // 
-            this.textSearch.Location = new System.Drawing.Point(143, 491);
+            this.textSearch.Location = new System.Drawing.Point(140, 519);
             this.textSearch.Name = "textSearch";
             this.textSearch.Size = new System.Drawing.Size(146, 20);
             this.textSearch.TabIndex = 3;
@@ -86,7 +91,7 @@
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(301, 489);
+            this.btnFind.Location = new System.Drawing.Point(298, 517);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(97, 23);
             this.btnFind.TabIndex = 4;
@@ -96,7 +101,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(503, 489);
+            this.btnRemove.Location = new System.Drawing.Point(500, 517);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(101, 23);
             this.btnRemove.TabIndex = 6;
@@ -111,7 +116,7 @@
             "PreOrder",
             "PostOrder",
             "InOrder"});
-            this.comboPType.Location = new System.Drawing.Point(675, 10);
+            this.comboPType.Location = new System.Drawing.Point(672, 38);
             this.comboPType.Name = "comboPType";
             this.comboPType.Size = new System.Drawing.Size(100, 21);
             this.comboPType.TabIndex = 8;
@@ -122,7 +127,7 @@
             this.dataGridPerson.AllowUserToAddRows = false;
             this.dataGridPerson.AllowUserToDeleteRows = false;
             this.dataGridPerson.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridPerson.Location = new System.Drawing.Point(16, 38);
+            this.dataGridPerson.Location = new System.Drawing.Point(13, 66);
             this.dataGridPerson.Name = "dataGridPerson";
             this.dataGridPerson.Size = new System.Drawing.Size(759, 212);
             this.dataGridPerson.TabIndex = 9;
@@ -131,7 +136,7 @@
             // labelCACount
             // 
             this.labelCACount.AutoSize = true;
-            this.labelCACount.Location = new System.Drawing.Point(13, 259);
+            this.labelCACount.Location = new System.Drawing.Point(10, 287);
             this.labelCACount.Name = "labelCACount";
             this.labelCACount.Size = new System.Drawing.Size(124, 13);
             this.labelCACount.TabIndex = 10;
@@ -142,7 +147,7 @@
             this.dataGridCA.AllowUserToAddRows = false;
             this.dataGridCA.AllowUserToDeleteRows = false;
             this.dataGridCA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridCA.Location = new System.Drawing.Point(15, 283);
+            this.dataGridCA.Location = new System.Drawing.Point(12, 311);
             this.dataGridCA.Name = "dataGridCA";
             this.dataGridCA.Size = new System.Drawing.Size(759, 200);
             this.dataGridCA.TabIndex = 11;
@@ -155,7 +160,7 @@
             "PreOrder",
             "PostOrder",
             "InOrder"});
-            this.comboCAType.Location = new System.Drawing.Point(674, 256);
+            this.comboCAType.Location = new System.Drawing.Point(671, 284);
             this.comboCAType.Name = "comboCAType";
             this.comboCAType.Size = new System.Drawing.Size(100, 21);
             this.comboCAType.TabIndex = 12;
@@ -163,18 +168,51 @@
             // 
             // btnTest
             // 
-            this.btnTest.Location = new System.Drawing.Point(675, 489);
+            this.btnTest.Location = new System.Drawing.Point(671, 517);
             this.btnTest.Name = "btnTest";
             this.btnTest.Size = new System.Drawing.Size(100, 23);
             this.btnTest.TabIndex = 0;
             this.btnTest.Text = "Test Structure";
             this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(786, 24);
+            this.menuStrip1.TabIndex = 13;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.readFileToolStripMenuItem,
+            this.saveAsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // readFileToolStripMenuItem
+            // 
+            this.readFileToolStripMenuItem.Name = "readFileToolStripMenuItem";
+            this.readFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.readFileToolStripMenuItem.Text = "Read From";
+            this.readFileToolStripMenuItem.Click += new System.EventHandler(this.readFileToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 524);
+            this.ClientSize = new System.Drawing.Size(786, 551);
             this.Controls.Add(this.btnTest);
             this.Controls.Add(this.comboCAType);
             this.Controls.Add(this.dataGridCA);
@@ -187,10 +225,14 @@
             this.Controls.Add(this.comboTypes);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.labelPersons);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "US2_1_AVL";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridCA)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,6 +252,10 @@
         private System.Windows.Forms.DataGridView dataGridCA;
         private System.Windows.Forms.ComboBox comboCAType;
         private System.Windows.Forms.Button btnTest;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem readFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 

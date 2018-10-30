@@ -1,4 +1,5 @@
 ﻿using AVLTree;
+using System;
 
 namespace Model
 {
@@ -18,5 +19,9 @@ namespace Model
             Owner o = (Owner)Node;
             return this.Person.CompareTo(o.Person);
         }
+
+        public static string GetCsvHeaders() => "PersonID;CadastralAreaID;PropertyListID;Share";
+
+        public string ToCSV(PropertyList pl) => String.Format("{0};{1};{2};{3}", this.Person.ID, pl.CadastralArea.ID, pl.ID, this.Share);
     }
 }

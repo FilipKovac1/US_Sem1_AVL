@@ -111,5 +111,11 @@ namespace US_Sem1_AVL
             this.CadastralAreasByID.Remove(new CadastralAreaByID(c)); // log n remove
             this.CadastralAreasByName.Remove(new CadastralAreaByName(c)); // log n remove
         }
+        
+        public void Merge(PropertyList toDelete, PropertyList toMerge)
+        {
+            toMerge.Merge(toDelete);
+            toDelete.Delete();
+        }
     }
 }

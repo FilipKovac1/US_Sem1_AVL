@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Windows.Forms;
 using Model;
 
@@ -11,17 +12,17 @@ namespace US_Sem1_AVL.GUI
         public delegate void OnDispose(CadastralArea cadastralArea, string oldName);
         public OnDispose onDispose;
 
-        public CadastralView()
+        private DataRow row;
+        private DataTable tablePLs;
+        private BindingSource bindingSourcePLs = new BindingSource();
+
+        public CadastralView(CadastralArea CadastralArea = null)
         {
             InitializeComponent();
-            this.CadastralArea = null;
-            this.PrintCadastralArea();
-        }
-
-        public CadastralView(CadastralArea CadastralArea = null) : this()
-        {
             this.CadastralArea = CadastralArea;
             this.PrintCadastralArea();
+            this.dataGridPropertyLists.DataSource = bindingSourcePLs;
+            this.ReloadData();
         }
 
         private void PrintCadastralArea()
@@ -74,10 +75,6 @@ namespace US_Sem1_AVL.GUI
 
         private void btnClose_Click(object sender, EventArgs e) => this.Dispose();
 
-        private void btnShowPropertyLists_Click(object sender, EventArgs e)
-        {
-        }
-
         private void btnShowProperties_Click(object sender, EventArgs e)
         {
             if (this.CadastralArea.PropertyLists.Count > 0)
@@ -88,6 +85,38 @@ namespace US_Sem1_AVL.GUI
             else
             {
                 MessageBox.Show("This should not happen");
+            }
+        }
+
+        private void ReloadData ()
+        {
+            tablePLs = new DataTable();
+            tablePLs.Columns.AddRange(new DataColumn[]
+            {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("Properties count", typeof(int))
+            });
+
+            if (this.CadastralArea.PropertyLists.Count > 0)
+                this.CadastralArea.PropertyLists.InOrder((pl) => tablePLs.Rows.Add(this.CreateRow(pl)));
+
+            this.bindingSourcePLs.DataSource = tablePLs;
+        }
+
+        private DataRow CreateRow (PropertyList pl)
+        {
+            row = this.tablePLs.NewRow();
+            row[0] = pl.ID;
+            row[1] = pl.Properties.Count;
+            return row;
+        }
+
+        private void dataGridPropertyLists_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1)
+            {
+                PropertyListView plv = new PropertyListView(this.CadastralArea.FindPropertyList(dataGridPropertyLists.Rows[e.RowIndex].Cells[0].Value.ToString()));
+                plv.ShowDialog();
             }
         }
     }

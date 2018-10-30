@@ -25,7 +25,7 @@ namespace Model
             p.Properties.PreOrder((property) =>
             {
                 if (newID)
-                    property.ID = this.Properties.Count;
+                    property.ID = this.Properties.Last().ID + 1; // unique ID because of duplicates
                 this.Properties.Add(property);
             });
             return ret;
@@ -56,7 +56,7 @@ namespace Model
         {
             c.PropertyLists.PreOrder((propertyList) =>
             {
-                propertyList.ID = this.PropertyLists.Count;
+                propertyList.ID = this.PropertyLists.Last().ID + 1;
                 this.AddPropertyList(propertyList, true);
             });
         }

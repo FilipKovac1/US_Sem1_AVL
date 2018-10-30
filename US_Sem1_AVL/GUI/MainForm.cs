@@ -223,11 +223,13 @@ namespace US_Sem1_AVL
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
+            CadastralArea c = null, c2 = null;
+            int search = 0;
+            InputDialog id = null;
             switch (comboTypes.SelectedIndex)
             {
                 case 1: // cadastral area
-                    CadastralArea c = null, c2 = null;
-                    if (Int32.TryParse(textSearch.Text, out int search))
+                    if (Int32.TryParse(textSearch.Text, out search))
                     {
                         c = new CadastralArea(search);
                         c = this.Program.Find(new CadastralAreaByID(new CadastralArea(search)));
@@ -241,7 +243,7 @@ namespace US_Sem1_AVL
                         MessageBox.Show("This cadastral area does not exists");
                     else
                     {
-                        InputDialog id = new InputDialog("Cadastral area to add this one (ID):");
+                        id = new InputDialog("Cadastral area to add this one (ID):");
                         id.onDispose += (idCa) =>
                         {
                             if (Int32.TryParse(idCa, out int idCAint) && c.ID != idCAint)
@@ -262,6 +264,54 @@ namespace US_Sem1_AVL
                         };
                         id.ShowDialog();
                     }
+                    break;
+                case 2: // Property list
+                    id = new InputDialog("Catastral area:");
+                    id.onDispose += (caId) =>
+                    {
+                        if (caId != "")
+                        {
+                            if (Int32.TryParse(caId, out search))
+                            {
+                                c = new CadastralArea(search, "");
+                                c = this.Program.Find(new CadastralAreaByID(c));
+                            }
+                            else
+                            {
+                                c = new CadastralArea(0, caId);
+                                c = this.Program.Find(new CadastralAreaByName(c));
+                            }
+                            if (c != null)
+                            {
+                                PropertyList pl = c.FindPropertyList(textSearch.Text);
+                                if (pl == null)
+                                    MessageBox.Show("Property list with this id does not exist");
+                                else
+                                {
+                                    InputDialog id2 = new InputDialog("Property list to move under");
+                                    id2.onDispose += (plId) =>
+                                    {
+                                        PropertyList pl2 = c.FindPropertyList(plId);
+                                        if (pl.CompareTo(pl2) == 0)
+                                            MessageBox.Show("Properties cannot be same");
+                                        else
+                                        {
+                                            this.Program.Merge(pl, pl2);
+                                            //this.InitPersons(); // possibility to remove property list from person
+                                            //this.InitCadastralAreas(); // one cadastral area removed one property list
+                                            MessageBox.Show(String.Format("Property list was successfully removed. Owners and properties was moved under CA.ID({0}) PL.ID({1})", c.ID, pl2.ID));
+                                        }
+                                    };
+                                    id2.ShowDialog();
+                                }
+                            }
+                            else
+                                MessageBox.Show("Cadastral area with this id/name does not exist");
+                        }
+                        else
+                            MessageBox.Show("You have to write something");
+                    };
+                    id.ShowDialog();
                     break;
                 default:
                     MessageBox.Show("This option is not supported yet!");
@@ -362,7 +412,6 @@ namespace US_Sem1_AVL
 
         private void dataGridPerson_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
             if (e.RowIndex != -1)
             {
                 PersonView pv = new PersonView(this.Program.Find(new Person(dataGridPerson.Rows[e.RowIndex].Cells["ID"].Value.ToString())), this);
@@ -372,7 +421,6 @@ namespace US_Sem1_AVL
         }
         private void dataGridCA_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-
             if (e.RowIndex != -1)
             {
                 CadastralView cv = new CadastralView(this.Program.Find(new CadastralAreaByID(new CadastralArea(Int32.Parse(dataGridCA.Rows[e.RowIndex].Cells["ID"].Value.ToString())))));

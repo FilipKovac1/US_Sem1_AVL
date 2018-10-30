@@ -44,6 +44,7 @@ namespace US_Sem1_AVL.GUI
             this.btnFindProperty = new System.Windows.Forms.Button();
             this.btnDeleteProperty = new System.Windows.Forms.Button();
             this.btnRemoveOwner = new System.Windows.Forms.Button();
+            this.checkShares = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.Owners)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,7 +129,7 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnAddOwner
             // 
-            this.btnAddOwner.Location = new System.Drawing.Point(224, 217);
+            this.btnAddOwner.Location = new System.Drawing.Point(224, 248);
             this.btnAddOwner.Name = "btnAddOwner";
             this.btnAddOwner.Size = new System.Drawing.Size(97, 23);
             this.btnAddOwner.TabIndex = 15;
@@ -168,7 +169,7 @@ namespace US_Sem1_AVL.GUI
             // 
             // btnRemoveOwner
             // 
-            this.btnRemoveOwner.Location = new System.Drawing.Point(224, 248);
+            this.btnRemoveOwner.Location = new System.Drawing.Point(224, 279);
             this.btnRemoveOwner.Name = "btnRemoveOwner";
             this.btnRemoveOwner.Size = new System.Drawing.Size(97, 23);
             this.btnRemoveOwner.TabIndex = 19;
@@ -176,11 +177,24 @@ namespace US_Sem1_AVL.GUI
             this.btnRemoveOwner.UseVisualStyleBackColor = true;
             this.btnRemoveOwner.Click += new System.EventHandler(this.btnRemoveOwner_Click);
             // 
+            // checkShares
+            // 
+            this.checkShares.AutoSize = true;
+            this.checkShares.Checked = true;
+            this.checkShares.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkShares.Location = new System.Drawing.Point(224, 221);
+            this.checkShares.Name = "checkShares";
+            this.checkShares.Size = new System.Drawing.Size(93, 17);
+            this.checkShares.TabIndex = 20;
+            this.checkShares.Text = "Control shares";
+            this.checkShares.UseVisualStyleBackColor = true;
+            // 
             // PropertyListView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(336, 414);
+            this.Controls.Add(this.checkShares);
             this.Controls.Add(this.btnRemoveOwner);
             this.Controls.Add(this.btnDeleteProperty);
             this.Controls.Add(this.btnFindProperty);
@@ -222,5 +236,6 @@ namespace US_Sem1_AVL.GUI
         private Button btnFindProperty;
         private Button btnDeleteProperty;
         private Button btnRemoveOwner;
+        private CheckBox checkShares;
     }
 }

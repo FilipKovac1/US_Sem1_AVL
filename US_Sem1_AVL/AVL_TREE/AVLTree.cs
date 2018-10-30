@@ -54,6 +54,37 @@ namespace AVLTree
         }
 
         /// <summary>
+        /// Returns the lowest object
+        /// </summary>
+        /// <returns></returns>
+        public T First()
+        {
+            if (this.Root == null)
+                return default(T);
+            return FindLeftLeaf(this.Root, out int steps).Data;
+        }
+
+        /// <summary>
+        /// Returns the highest object
+        /// </summary>
+        /// <returns></returns>
+        public T Last()
+        {
+            if (this.Root == null)
+                return default(T);
+            Node<T> root = this.Root;
+            while (true)
+            {
+                if (root.Right != null)
+                    root = root.Right;
+                else if (root.Left != null)
+                    root = root.Left;
+                else
+                    return root.Data;
+            }
+        }
+
+        /// <summary>
         /// Insert of Generic class to tree using loop
         /// </summary>
         /// <param name="Data"></param>

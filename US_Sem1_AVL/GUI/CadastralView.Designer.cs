@@ -39,6 +39,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.inputPropCount = new System.Windows.Forms.TextBox();
             this.inputPListsCount = new System.Windows.Forms.TextBox();
+            this.dataGridPropertyLists = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPropertyLists)).BeginInit();
             this.SuspendLayout();
             // 
             // inputName
@@ -75,7 +77,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(129, 194);
+            this.btnClose.Location = new System.Drawing.Point(129, 336);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 13;
@@ -85,7 +87,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(210, 194);
+            this.btnOk.Location = new System.Drawing.Point(210, 336);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 11;
@@ -137,11 +139,21 @@
             this.inputPListsCount.Size = new System.Drawing.Size(75, 20);
             this.inputPListsCount.TabIndex = 18;
             // 
+            // dataGridPropertyLists
+            // 
+            this.dataGridPropertyLists.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridPropertyLists.Location = new System.Drawing.Point(17, 165);
+            this.dataGridPropertyLists.Name = "dataGridPropertyLists";
+            this.dataGridPropertyLists.Size = new System.Drawing.Size(268, 165);
+            this.dataGridPropertyLists.TabIndex = 19;
+            this.dataGridPropertyLists.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridPropertyLists_CellClick);
+            // 
             // CadastralView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(301, 223);
+            this.ClientSize = new System.Drawing.Size(301, 369);
+            this.Controls.Add(this.dataGridPropertyLists);
             this.Controls.Add(this.inputPListsCount);
             this.Controls.Add(this.inputPropCount);
             this.Controls.Add(this.label4);
@@ -155,6 +167,7 @@
             this.Controls.Add(this.label1);
             this.Name = "CadastralView";
             this.Text = "CadastralView";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridPropertyLists)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,5 +186,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox inputPropCount;
         private System.Windows.Forms.TextBox inputPListsCount;
+        private System.Windows.Forms.DataGridView dataGridPropertyLists;
     }
 }

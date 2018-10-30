@@ -129,5 +129,30 @@ namespace Model
         }
 
         public override string ToString() => this.ID + "";
+
+        public void Delete() => this.CadastralArea.PropertyLists.Remove(this); // remove from cadastral area
+
+        public void Merge(PropertyList toDelete)
+        {
+            toDelete.Properties.PreOrder((p) => {
+                p.PropertyList = this;
+                this.Properties.Add(p);
+            });
+
+            this.Owners.PreOrder((o) => o.Share /= 2);
+            Owner o2 = null;
+            toDelete.Owners.PreOrder((o) => {
+                o.Share /= 2;
+                o2 = this.Owners.Find(o); // comparing person
+                if (o2 == null)
+                {
+                    this.Owners.Add(o); // add new owner
+                    o.Person.AddPropertyList(this); // add new property list to person
+                }
+                else
+                    o2.Share += o.Share; // do nothing it is there
+                o.Person.RemovePropertyList(toDelete); // remove old from person
+            });
+        }
     }
 }

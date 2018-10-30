@@ -108,7 +108,10 @@ namespace US_Sem1_AVL.GUI
                                 MessageBox.Show("Share has to be in range <0.00;1.00>");
                             else if (o.Share != s)
                             {
-                                this.PropertyList.ChangeShare(o, s);
+                                if (checkShares.Checked)
+                                    this.PropertyList.ChangeShare(o, s);
+                                else
+                                    o.Share = s;
                                 this.ReloadData();
                             }
                         };

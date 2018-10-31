@@ -10,7 +10,13 @@ namespace AVLTree
         private Node<T> Root { get; set; }
         public int Count { get; set; }
 
+        /// <summary>
+        /// Only for test purposes
+        /// </summary>
         private Random RandomH = new Random();
+        /// <summary>
+        /// Only for test purposes
+        /// </summary>
         private Random RandomS = new Random();
 
         public delegate void Iterate(T Data);
@@ -23,10 +29,11 @@ namespace AVLTree
         }
 
         /// <summary>
+        /// Find item in the tree, if did not find anything return null
         /// n -> nuber of items in the tree
         /// O(log n)
         /// </summary>
-        /// <param name="Data"></param>
+        /// <param name="Data">object to find</param>
         /// <returns></returns>
         public T Find(T Data)
         {
@@ -178,6 +185,11 @@ namespace AVLTree
             return true;
         }
 
+        /// <summary>
+        /// Delete object from the structure
+        /// </summary>
+        /// <param name="Data"></param>
+        /// <returns></returns>
         public bool Remove (T Data)
         {
             if (this.Root == null || Data == null)
@@ -285,6 +297,12 @@ namespace AVLTree
             return true;
         }
 
+        /// <summary>
+        /// Find left leaft return the lowest left leaf of node from param
+        /// </summary>
+        /// <param name="Node"></param>
+        /// <param name="steps">height from node to found node</param>
+        /// <returns></returns>
         private Node<T> FindLeftLeaf(Node<T> Node, out int steps)
         {
             steps = 0;
@@ -295,6 +313,12 @@ namespace AVLTree
             }
             return Node;
         }
+        /// <summary>
+        /// Find left leaf while saving the path to the stack 
+        /// </summary>
+        /// <param name="Node"></param>
+        /// <param name="s"></param>
+        /// <param name="x"></param>
         private void FindLeftLeaf(Node<T> Node, Stack s, int x = 1)
         {
             while (Node != null)
@@ -518,6 +542,11 @@ namespace AVLTree
             return ret;
         }
         private string PrintNode (Node<T> Node) => (Node.Parent != null ? Node.Parent.ToString() + ":" : "") + Node.ToString() + " | ";
+        /// <summary>
+        /// return LinkedList of generic class post order
+        /// </summary>
+        /// <param name="iterate"></param>
+        /// <returns></returns>
         public LinkedList<T> PostOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
@@ -544,6 +573,11 @@ namespace AVLTree
             }
             return ret;
         }
+        /// <summary>
+        /// returns LinkedList of generic class in order
+        /// </summary>
+        /// <param name="iterate"></param>
+        /// <returns></returns>
         public LinkedList<T> InOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
@@ -566,6 +600,11 @@ namespace AVLTree
 
             return ret;
         }
+        /// <summary>
+        /// return LinkedList of generic class in pre order
+        /// </summary>
+        /// <param name="iterate"></param>
+        /// <returns></returns>
         public LinkedList<T> PreOrder(Iterate iterate = null)
         {
             LinkedList<T> ret = new LinkedList<T>();
@@ -620,6 +659,10 @@ namespace AVLTree
             return ret;
 
         }
+        /// <summary>
+        /// Find random object in the structure
+        /// </summary>
+        /// <returns></returns>
         public T Find()
         {
             if (this.Root == null)

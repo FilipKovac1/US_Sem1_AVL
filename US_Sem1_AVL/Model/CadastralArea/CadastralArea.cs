@@ -19,6 +19,15 @@ namespace Model
             this.PropertyLists = new AVLTree<PropertyList>();
         }
 
+        /// <summary>
+        /// Add property list to this cadastral area and also all properties that are linked to property list are added to this cadastral area
+        /// O(log pl + prop * log prop2) -> pl count of property lists in this area, prop count of properties in added property list, prop2 count of property in this area
+        /// if (newID)
+        ///     O(log pl + prop * (log prop2 + log prop2))
+        /// </summary>
+        /// <param name="p">PropertyList to add</param>
+        /// <param name="newID">if is neccessary to set new id of property, if yes, new id is set as highest value in the tree + 1</param>
+        /// <returns></returns>
         public bool AddPropertyList(PropertyList p, bool newID = false)
         {
             bool ret = this.PropertyLists.Add(p);
@@ -36,6 +45,11 @@ namespace Model
             return String.Format("| {0} - {1} | ", this.ID, this.Name);
         }
 
+        /// <summary>
+        /// Find property list in this area
+        /// </summary>
+        /// <param name="text">ID of property list as string</param>
+        /// <returns></returns>
         public PropertyList FindPropertyList(string text)
         {
             if (!Int32.TryParse(text, out int search))
@@ -44,6 +58,11 @@ namespace Model
             return this.PropertyLists.Find(new PropertyList(search));
         }
 
+        /// <summary>
+        /// Find property in this arae
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public Property FindProperty (string text)
         {
             if (!Int32.TryParse(text, out int search))
@@ -52,6 +71,10 @@ namespace Model
             return this.Properties.Find(new Property(search));
         }
 
+        /// <summary>
+        /// Merge two cadastral areas
+        /// </summary>
+        /// <param name="c"></param>
         public void Merge(CadastralArea c)
         {
             c.PropertyLists.PreOrder((propertyList) =>

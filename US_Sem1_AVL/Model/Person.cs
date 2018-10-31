@@ -16,6 +16,9 @@ namespace Model
         }
 
         private Property _Property;
+        /// <summary>
+        /// If property set to null, remove this person from occupants of the last property
+        /// </summary>
         public Property Property {
             get { return _Property; }
             set {

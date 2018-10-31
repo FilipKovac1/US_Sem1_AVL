@@ -20,6 +20,11 @@ namespace Model
         public Property(int ID, string Address, string Description) : this(ID, Address) => this.Description = Description;
         public Property(int ID, string Address, string Description, PropertyList PropertyList) : this(ID, Address, Description) => this.PropertyList = PropertyList;
 
+        /// <summary>
+        /// Add occupant to this property and set property of person to this
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public bool AddOccupant (Person p)
         {
             this.Occupants.Add(p);
@@ -36,6 +41,12 @@ namespace Model
 
         public override string ToString() => String.Format("{0}", this.ID);
 
+        /// <summary>
+        /// Change owner in property
+        /// </summary>
+        /// <param name="oldOwner"></param>
+        /// <param name="newOwner"></param>
+        /// <returns></returns>
         public bool ChangeOwner(Person oldOwner, Person newOwner) => this.PropertyList.ChangeOwner(oldOwner, newOwner);
 
         public static string GetCsvHeaders() => "ID;Address;Description;CadastralAreaID;PropertyListID";

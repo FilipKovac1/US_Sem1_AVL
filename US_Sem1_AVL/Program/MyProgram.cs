@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using AVLTree;
 using Model;
 
@@ -60,39 +59,85 @@ namespace US_Sem1_AVL
             }
         }
 
+        /// <summary>
+        /// If was cadastral area's name updated, need to remove and insert to tree
+        /// log n + log (n - 1)
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="oldName"></param>
         public void UpdateCadastralArea(CadastralArea c, string oldName)
         {
             this.CadastralAreasByName.Remove(new CadastralAreaByName(new CadastralArea(0, oldName)));
             this.CadastralAreasByName.Add(new CadastralAreaByName(c));
         }
 
+        /// <summary>
+        /// Find person 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public Person Find(Person data) => this.Persons.Find(data);
+        /// <summary>
+        /// Find cadastra area by ID
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public CadastralArea Find(CadastralAreaByID data)
         {
             CadastralAreaByID c = this.CadastralAreasByID.Find(data);
             return c?.CadastralArea;
         }
+        /// <summary>
+        /// Find cadastral area by name
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public CadastralArea Find(CadastralAreaByName data)
         {
             CadastralAreaByName c = this.CadastralAreasByName.Find(data);
             return c?.CadastralArea;
         }
 
+        /// <summary>
+        /// Add person to structure
+        /// </summary>
+        /// <param name="Person"></param>
+        /// <returns></returns>
         public bool AddPerson(Person Person) => this.Persons.Add(Person);
+        /// <summary>
+        /// Add cadastral area to structure, this will add it to two structure, by name and by ID
+        /// log n + log n where n is count of cadastral areas
+        /// </summary>
+        /// <param name="CadastralArea"></param>
+        /// <returns></returns>
         public bool AddCadastralArea(CadastralArea CadastralArea)
         {
-            if (!this.CadastralAreasByID.Add(new CadastralAreaByID(CadastralArea)))
+            CadastralAreaByID caID = new CadastralAreaByID(CadastralArea);
+            if (!this.CadastralAreasByID.Add(caID))
                 return false;
             if (!this.CadastralAreasByName.Add(new CadastralAreaByName(CadastralArea)))
+            {
+                this.CadastralAreasByID.Remove(caID);
                 return false;
+            }
             return true;
         }
+        /// <summary>
+        /// Add property list to cadastral area
+        /// log n + log m -> n property lists count in cadastral area, m owners count
+        /// </summary>
+        /// <param name="PropertyList"></param>
+        /// <returns></returns>
         public bool AddPropertyList(PropertyList PropertyList)
         {
             PropertyList.Owners.PreOrder((o) => o.Person.AddPropertyList(PropertyList));       
             return PropertyList.CadastralArea.AddPropertyList(PropertyList);
         }
 
+        /// <summary>
+        /// Create structure, full it with random data and random deletion to demonstrate structure as AVL tree
+        /// </summary>
+        /// <returns></returns>
         public bool TestStructure ()
         {
             AVLTree<Person> test = new AVLTree<Person>();
@@ -106,6 +151,11 @@ namespace US_Sem1_AVL
             return test.TestAVL();
         }
 
+        /// <summary>
+        /// Delete cadastral area and all its data move under another cadastral area (probably changing of property lists ID because of duplicates)
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="c2"></param>
         public void Merge(CadastralArea c, CadastralArea c2)
         {
             c2.Merge(c);
@@ -113,12 +163,21 @@ namespace US_Sem1_AVL
             this.CadastralAreasByName.Remove(new CadastralAreaByName(c)); // log n remove
         }
         
+        /// <summary>
+        /// Delete property list and all its data beneath move under toMerge param
+        /// </summary>
+        /// <param name="toDelete"></param>
+        /// <param name="toMerge"></param>
         public void Merge(PropertyList toDelete, PropertyList toMerge)
         {
             toMerge.Merge(toDelete);
             toDelete.Delete();
         }
 
+        /// <summary>
+        /// Save data to csv files in path declared by param
+        /// </summary>
+        /// <param name="path"></param>
         public void ToCSV(string path)
         {
             using (StreamWriter writer = new StreamWriter(path + "\\persons.csv"))
@@ -156,8 +215,15 @@ namespace US_Sem1_AVL
             }
         }
 
+        /// <summary>
+        /// Load structure from CSV file
+        /// </summary>
+        /// <param name="path"></param>
         public void FromCSV (string path)
         {
+            this.Persons = new AVLTree<Person>();
+            this.CadastralAreasByID = new AVLTree<CadastralAreaByID>();
+            this.CadastralAreasByName = new AVLTree<CadastralAreaByName>();
             string[] line;
             using (StreamReader reader = new StreamReader(@path + "\\persons.csv"))
             {

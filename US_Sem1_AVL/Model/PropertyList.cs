@@ -30,6 +30,10 @@ namespace Model
             return Compare.IntC(this.ID, p.ID);
         }
 
+        /// <summary>
+        /// Check whatever the sum of owner's shares are equal to 1 
+        /// </summary>
+        /// <returns></returns>
         private bool CheckShares ()
         {
             double sum = Owners.Count == 0 ? 1 : 0;
@@ -39,6 +43,14 @@ namespace Model
             return true;
         }
 
+        /// <summary>
+        /// Change owner from old to new
+        /// added propertyList to new 
+        /// removed this property list from old's property lists
+        /// </summary>
+        /// <param name="oldOwner"></param>
+        /// <param name="newOwner"></param>
+        /// <returns></returns>
         public bool ChangeOwner(Person oldOwner, Person newOwner)
         {
             Owner o = this.Owners.Find(new Owner(oldOwner));
@@ -49,6 +61,13 @@ namespace Model
             return true;
         }
 
+        /// <summary>
+        /// Add owner to property list, with share as parameter, if check is false does not recompute share of the others
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="share"></param>
+        /// <param name="check"></param>
+        /// <returns></returns>
         public bool AddOwner (Person p, double share = 1, bool check = true)
         {
             if (p == null || this.Owners.Find(new Owner(p)) != null) // if owner is already added
@@ -68,6 +87,12 @@ namespace Model
             return this.CheckShares();
         }
 
+        /// <summary>
+        /// Add property to this list, also add to cadastral area
+        /// O(log countPropCa + log countPropThis)
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public bool AddProperty (Property p)
         {
             if (p == null)
@@ -77,6 +102,11 @@ namespace Model
             return this.Properties.Add(p);
         }
 
+        /// <summary>
+        /// get share of person to this property list
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         public double GetOwnersShare(Person person)
         {
             Owner o = this.Owners.Find(new Owner(person));
@@ -85,6 +115,11 @@ namespace Model
             return 0;
         }
 
+        /// <summary>
+        /// Change share of owner
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="newValue"></param>
         public void ChangeShare (Owner o, double newValue)
         {
             if (this.Owners.Count <= 1)
